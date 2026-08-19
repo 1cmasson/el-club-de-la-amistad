@@ -37,8 +37,8 @@ export default function HomePage() {
           <Image
             src="/assets/seal.png"
             alt="Club de la Amistad para un Hialeah Mejor Voluntario"
-            width={900} 
-            height={891}
+            width={900}
+            height={900}
             className={s.heroSeal}
             priority
           />

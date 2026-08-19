@@ -36,7 +36,7 @@ export function SiteHeader() {
             src="/assets/seal.png"
             alt="Club de la Amistad seal"
             width={68}
-            height={67}
+            height={68}
             className={s.brandSeal}
             priority
           />
