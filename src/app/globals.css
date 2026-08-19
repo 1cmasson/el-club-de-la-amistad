@@ -1,26 +1,181 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Wood + candlelight palette, lifted from the Club de la Amistad design */
+  --ink: #241509;
+  --wood: #33200f;
+  --wood-deep: #1c1108;
+  --cream: #f6efe1;
+  --cream-dim: rgba(246, 239, 225, 0.82);
+  --cream-muted: rgba(246, 239, 225, 0.62);
+  --cream-faint: rgba(246, 239, 225, 0.5);
+
+  --gold: #d4a02a;
+  --gold-soft: #e8c268;
+  --gold-pale: #f0d79a;
+  --gold-light: #f7e7bd;
+  --gold-deep: #c9942a;
+  --bronze: #a97615;
+  --bronze-dark: #8a6412;
+
+  --espresso: #2a1a0c;
+  --paper: #f6efe1;
+  --paper-input: #fffdf8;
+  --paper-border: #c9b795;
+  --paper-border-soft: #d9c9a6;
+
+  --rule: rgba(212, 160, 42, 0.35);
+  --rule-strong: rgba(212, 160, 42, 0.45);
+
+  --shell: 1320px;
+  --gutter: clamp(20px, 5vw, 56px);
+  --header-h: 92px;
+
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 12px);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-body), "Source Sans 3", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  text-wrap: pretty;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--gold-soft);
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+a:hover {
+  color: #f6dfa0;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display), Cinzel, Georgia, serif;
+  margin: 0;
+  text-wrap: balance;
+}
+
+img {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-pale);
+  outline-offset: 2px;
+}
+
+/* The whole site sits on a soft-light wood grain. */
+.woodstage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--wood);
+  background-image:
+    linear-gradient(
+      172deg,
+      rgba(74, 45, 25, 0.35) 0%,
+      rgba(30, 18, 8, 0.55) 58%,
+      rgba(46, 27, 14, 0.35) 100%
+    ),
+    url("/assets/wood-grain.jpg");
+  background-size: auto, 1024px 750px;
+  background-repeat: no-repeat, repeat;
+  background-blend-mode: soft-light, normal;
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.kicker {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.lede {
+  margin: 0;
+  font-size: clamp(17px, 2.2vw, 20px);
+  line-height: 1.65;
+  color: var(--cream-dim);
+}
+
+.sectionTitle {
+  font-size: clamp(27px, 4.6vw, 40px);
+  font-weight: 700;
+  color: var(--gold-light);
+  line-height: 1.12;
+}
+
+/* Gold "diamond" bullet used throughout the design. */
+.diamond {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

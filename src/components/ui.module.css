@@ -1,0 +1,229 @@
+/* ---------- Buttons ---------- */
+
+.btnGold,
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 14px 30px;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: filter 160ms ease, background-color 160ms ease, transform 90ms ease;
+}
+
+.btnGold {
+  border: 1px solid var(--gold-pale);
+  background: linear-gradient(180deg, var(--gold-soft), var(--gold-deep));
+  color: var(--espresso);
+  box-shadow: 0 3px 0 rgba(120, 80, 20, 0.7);
+}
+
+.btnGold:hover {
+  filter: brightness(1.07);
+  color: var(--espresso);
+}
+
+.btnGold:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 rgba(120, 80, 20, 0.7);
+}
+
+.btnGhost {
+  border: 1px solid rgba(240, 215, 154, 0.6);
+  background: transparent;
+  color: var(--gold-pale);
+}
+
+.btnGhost:hover {
+  background: rgba(240, 215, 154, 0.1);
+  color: var(--gold-pale);
+}
+
+.btnGhost:active {
+  transform: translateY(2px);
+}
+
+.btnGold[disabled],
+.btnGhost[disabled],
+.submit[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* ---------- Cream "paper" panel: the forms ---------- */
+
+.paper {
+  padding: clamp(20px, 5vw, 34px);
+  background: var(--paper);
+  border: 1px solid var(--paper-border-soft);
+  border-radius: 4px;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.45);
+  display: grid;
+  gap: 18px;
+  color: var(--espresso);
+}
+
+.paperTitle {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.paperSub {
+  font-size: 14.5px;
+  color: rgba(42, 26, 12, 0.7);
+}
+
+.fine {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(42, 26, 12, 0.6);
+}
+
+.stepHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.stepNum {
+  font-family: var(--font-display), Cinzel, serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--bronze);
+}
+
+.stepLabel {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.divider {
+  border-top: 1px solid rgba(42, 26, 12, 0.12);
+  padding-top: clamp(22px, 3vw, 30px);
+}
+
+/* ---------- Fields ---------- */
+
+.field {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(42, 26, 12, 0.65);
+}
+
+.input,
+.select,
+.textarea {
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid var(--paper-border);
+  border-radius: 3px;
+  background: var(--paper-input);
+  font-size: 16px;
+  color: var(--espresso);
+  text-transform: none;
+  letter-spacing: 0;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--bronze);
+  box-shadow: 0 0 0 3px rgba(212, 160, 42, 0.22);
+  outline: none;
+}
+
+.textarea {
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.select {
+  padding-inline: 12px;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--bronze) 50%),
+    linear-gradient(135deg, var(--bronze) 50%, transparent 50%);
+  background-position: calc(100% - 20px) 21px, calc(100% - 14px) 21px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.submit {
+  min-height: 52px;
+  border: none;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--gold), var(--bronze));
+  color: #fffdf6;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(90, 58, 10, 0.5);
+  transition: filter 160ms ease, transform 90ms ease;
+}
+
+.submit:hover {
+  filter: brightness(1.06);
+}
+
+.submit:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 rgba(90, 58, 10, 0.5);
+}
+
+.error {
+  padding: 12px 14px;
+  border: 1px solid rgba(140, 40, 20, 0.35);
+  border-left: 3px solid #8c2814;
+  border-radius: 3px;
+  background: rgba(140, 40, 20, 0.07);
+  font-size: 15px;
+  line-height: 1.5;
+  color: #7a2410;
+}
+
+/* ---------- Dark side panels ---------- */
+
+.panel {
+  padding: clamp(20px, 4vw, 28px);
+  border: 1px solid rgba(212, 160, 42, 0.4);
+  border-radius: 3px;
+  background: rgba(246, 239, 225, 0.05);
+  display: grid;
+  gap: 14px;
+}
+
+.panelAccent {
+  border-left: 3px solid var(--gold);
+}
+
+.panelKicker {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.panelBody {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(246, 239, 225, 0.78);
+}

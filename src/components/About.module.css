@@ -1,0 +1,160 @@
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(44px, 8vw, 76px) clamp(16px, 4vw, 40px) 40px;
+  display: grid;
+  gap: clamp(44px, 7vw, 72px);
+}
+
+.intro {
+  display: grid;
+  gap: 20px;
+  max-width: 62ch;
+}
+
+.title {
+  font-size: clamp(33px, 7.5vw, 54px);
+  font-weight: 900;
+  line-height: 1.06;
+  color: var(--gold-light);
+}
+
+.founder {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: clamp(28px, 4vw, 48px);
+  align-items: start;
+  padding: clamp(20px, 5vw, 40px);
+  background: linear-gradient(180deg, rgba(246, 239, 225, 0.08), rgba(246, 239, 225, 0.03));
+  border: 1px solid rgba(212, 160, 42, 0.4);
+  border-radius: 4px;
+}
+
+.portraitCol {
+  display: grid;
+  gap: 14px;
+}
+
+.portraitFrame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border: 1px solid rgba(212, 160, 42, 0.45);
+  border-radius: 3px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background-color: #2b1a0d;
+  background-image: linear-gradient(180deg, rgba(30, 17, 7, 0.52), rgba(30, 17, 7, 0.8)),
+    url("/assets/hialeah-gate.jpg");
+  background-size: cover, cover;
+  background-position: center, center;
+}
+
+.portraitDisc {
+  position: relative;
+  width: 76%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(212, 160, 42, 0.3);
+  outline: 3px solid var(--gold);
+  outline-offset: 0;
+}
+
+.portraitImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 14%;
+  display: block;
+}
+
+.founderName {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gold-light);
+}
+
+.founderRole {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.founderCopy {
+  display: grid;
+  gap: 22px;
+}
+
+.quote {
+  margin: 0;
+  font-family: var(--font-display), Cinzel, serif;
+  font-size: clamp(21px, 3.4vw, 26px);
+  line-height: 1.35;
+  color: var(--gold-pale);
+}
+
+.para {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(246, 239, 225, 0.8);
+}
+
+.twoUp {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(30px, 4vw, 48px);
+}
+
+.blockTitle {
+  font-size: clamp(24px, 3.6vw, 30px);
+  font-weight: 700;
+  color: var(--gold-light);
+}
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.value {
+  padding: clamp(20px, 4vw, 28px);
+  border: 1px solid rgba(212, 160, 42, 0.3);
+  border-radius: 3px;
+  background: rgba(246, 239, 225, 0.045);
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+
+.value:hover {
+  border-color: rgba(212, 160, 42, 0.6);
+  transform: translateY(-2px);
+}
+
+.valueTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--gold-pale);
+}
+
+.valueBody {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(246, 239, 225, 0.75);
+}
+
+.callLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}

@@ -1,0 +1,178 @@
+/* ---------- Hero ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  padding-block: clamp(48px, 9vw, 110px) clamp(52px, 8vw, 100px);
+}
+
+.heroCopy {
+  display: grid;
+  gap: 28px;
+  max-width: 600px;
+}
+
+.heroTitle {
+  font-weight: 900;
+  font-size: clamp(38px, 6vw, 64px);
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+  color: var(--gold-light);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+}
+
+.heroBody {
+  margin: 0;
+  max-width: 48ch;
+  font-size: clamp(17px, 1.8vw, 20px);
+  line-height: 1.65;
+  color: var(--cream-dim);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-top: 4px;
+}
+
+.heroSealWrap {
+  display: grid;
+  place-items: center;
+}
+
+.heroSeal {
+  width: clamp(240px, 28vw, 380px);
+  height: auto;
+  filter: drop-shadow(0 24px 50px rgba(0, 0, 0, 0.6));
+  animation: settle 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes settle {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- How it works ---------- */
+
+.section {
+  padding-block: clamp(52px, 8vw, 100px);
+  display: grid;
+  gap: clamp(36px, 4vw, 52px);
+}
+
+.sectionHead {
+  display: grid;
+  gap: 14px;
+  max-width: 60ch;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 20px;
+}
+
+.step {
+  padding: clamp(22px, 4vw, 32px);
+  background: linear-gradient(180deg, rgba(246, 239, 225, 0.07), rgba(246, 239, 225, 0.03));
+  border: 1px solid rgba(212, 160, 42, 0.35);
+  border-radius: 3px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+
+.step:hover {
+  border-color: rgba(212, 160, 42, 0.65);
+  transform: translateY(-2px);
+}
+
+.stepNum {
+  font-family: var(--font-display), Cinzel, serif;
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+
+.stepTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+
+.stepBody {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(246, 239, 225, 0.75);
+}
+
+.catsHead {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cream-faint);
+}
+
+.cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cat {
+  padding: 10px 18px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  font-size: 15px;
+  color: var(--gold-pale);
+}
+
+/* ---------- Join ---------- */
+
+.join {
+  background: linear-gradient(180deg, rgba(20, 12, 5, 0.55), rgba(20, 12, 5, 0.25));
+  border-top: 1px solid rgba(212, 160, 42, 0.28);
+  scroll-margin-top: calc(var(--header-h) + 8px);
+}
+
+.joinGrid {
+  padding-block: clamp(52px, 8vw, 100px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+
+.joinCopy {
+  display: grid;
+  gap: 20px;
+  max-width: 52ch;
+}
+
+.joinBody {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.65;
+  color: rgba(246, 239, 225, 0.8);
+}
+
+.perks {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.perk {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 16.5px;
+  color: rgba(246, 239, 225, 0.8);
+}
