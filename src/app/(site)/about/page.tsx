@@ -25,9 +25,8 @@ export default function AboutPage() {
         <div className={s.portraitCol}>
           <div className={s.portraitFrame}>
             <div className={s.portraitDisc}>
-              {/* Swap public/assets/edith-calvo.jpg for the real portrait — no code change needed. */}
               <Image
-                src="/assets/edith-calvo.jpg"
+                src="/assets/edith-calvo.png"
                 alt="Edith Calvo"
                 fill
                 sizes="(max-width: 700px) 60vw, 300px"

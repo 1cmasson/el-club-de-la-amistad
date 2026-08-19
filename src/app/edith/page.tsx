@@ -9,7 +9,7 @@ import s from "@/components/ContactCard.module.css";
 
 const PHONE_DISPLAY = "(786) 801-9879";
 const PHONE_E164 = "+17868019879";
-const PORTRAIT = "/assets/edith-calvo.jpg";
+const PORTRAIT = "/assets/edith-calvo.png";
 
 /** Square-crops the portrait to a base64 JPEG so the vCard carries a photo. */
 function loadPortraitBase64(): Promise<string> {
@@ -25,6 +25,11 @@ function loadPortraitBase64(): Promise<string> {
         canvas.height = size;
         const ctx = canvas.getContext("2d");
         if (!ctx) return resolve("");
+        // The portrait is a cutout with a transparent background, and JPEG has
+        // no alpha — without an opaque ground every transparent pixel would
+        // export as black. Fill with the card's cream before drawing.
+        ctx.fillStyle = "#f6efe1";
+        ctx.fillRect(0, 0, size, size);
         const side = Math.min(img.naturalWidth, img.naturalHeight);
         const sx = (img.naturalWidth - side) / 2;
         const sy = Math.max(

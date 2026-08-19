@@ -89,15 +89,17 @@ UI. Manual deploys work either way: `netlify deploy --build --prod`.
 `public/assets/` holds the seal, the wood-grain background tile, the Hialeah
 gate photo, and the founder portrait.
 
-**The portrait is a placeholder.** The original was unrecoverable from the
-Design API (its 256 KB per-file cap truncates the file). Drop the real photo in
-as `public/assets/edith-calvo.jpg` — roughly 4:5, face in the upper third — and
-both the About page and the contact card pick it up with no code change. The
-vCard on `/edith` embeds whatever is at that path.
+`edith-calvo.png` is a **cutout with a transparent background**, which is what
+the design intended: it sits on a gold-tinted disc, so the tint shows through
+around her rather than a photographic background. Keep the alpha if you ever
+replace it — a flattened JPEG would show as a hard rectangle inside the circle.
+
+That transparency is also why `/edith` fills its canvas with cream before
+drawing the vCard photo. JPEG has no alpha, so without an opaque ground every
+transparent pixel exports as black.
 
 ## Things to replace before launch
 
-- `public/assets/edith-calvo.jpg` — placeholder portrait (see above).
 - `hola@clubdelaamistad.org` in `src/app/(site)/report/page.tsx` — confirm this
   mailbox exists.
 - **`(305) 445-4860`** — the Hialeah Public Works number in the emergency copy
