@@ -64,6 +64,26 @@ no submission. Keep the two in sync.
 Submissions appear under **Netlify → your site → Forms**. Turn on email
 notifications there so reports reach a person.
 
+> **Form detection is off by default on new Netlify sites** and had to be
+> enabled on this one (`processing_settings.ignore_html_forms` → `false`, i.e.
+> Site configuration → Forms → Form detection). That setting lives in the
+> Netlify dashboard, **not in this repo** — it cannot be set from
+> `netlify.toml`. If this site is ever recreated, moved to another account, or
+> forked, forms go quiet with no error anywhere until it is re-enabled.
+
+## Deployment
+
+Pushes to `main` deploy automatically. The wiring is a **Netlify build hook
+plus a GitHub push webhook**, not Netlify's native Git integration, because the
+latter needs the Netlify GitHub App installed interactively. Two consequences:
+
+- No deploy previews on pull requests, and no branch deploys.
+- The webhook fires on a push to *any* branch, while the build hook is pinned
+  to `main` — so pushing a feature branch rebuilds `main` from `main`.
+
+To get the real integration, click **Link to Git** on the site in the Netlify
+UI. Manual deploys work either way: `netlify deploy --build --prod`.
+
 ## Assets
 
 `public/assets/` holds the seal, the wood-grain background tile, the Hialeah
@@ -80,6 +100,11 @@ vCard on `/edith` embeds whatever is at that path.
 - `public/assets/edith-calvo.jpg` — placeholder portrait (see above).
 - `hola@clubdelaamistad.org` in `src/app/(site)/report/page.tsx` — confirm this
   mailbox exists.
+- **`(305) 445-4860`** — the Hialeah Public Works number in the emergency copy
+  (`rUrgentBody` in both locale files). This one came from the design and looks
+  real, so nobody will notice if it is wrong; verify it, because someone may
+  dial it during an actual emergency. The `(305) 555-0142` numbers elsewhere
+  are obviously placeholders and flag themselves.
 - The address typeahead on `/report` uses a fixed list of Hialeah cross streets
   (`ADDRESS_POOL` in `src/components/ReportForm.tsx`). Swap in a real geocoder
   when there is budget for one.
