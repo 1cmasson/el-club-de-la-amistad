@@ -83,6 +83,9 @@
   font-size: 13px;
   line-height: 1.5;
   color: rgba(42, 26, 12, 0.6);
+  /* Also used as a hint inside .field, which uppercases and tracks its label. */
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .stepHead {
@@ -226,4 +229,71 @@
   font-size: 16px;
   line-height: 1.6;
   color: rgba(246, 239, 225, 0.78);
+}
+
+/* ---------- Photo frames ---------- */
+
+/*
+ * The gold "plaque": a machined bezel around a photo, used for the hero and
+ * the gallery band. The gradient is the design's own five-stop gold ramp —
+ * it reads as a milled edge catching light, which no single token can express.
+ */
+.plaque {
+  padding: clamp(10px, 1.4vw, 16px);
+  border-radius: 3px;
+  background: linear-gradient(
+    150deg,
+    #f3d894 0%,
+    var(--gold-deep) 26%,
+    #8a5f16 52%,
+    var(--gold-soft) 74%,
+    #a97a1e 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(90, 58, 12, 0.9),
+    0 1px 0 rgba(255, 236, 182, 0.45) inset,
+    0 22px 48px rgba(0, 0, 0, 0.45);
+}
+
+.plaqueInner {
+  padding: clamp(6px, 0.8vw, 10px);
+  background: linear-gradient(180deg, var(--wood), var(--ink));
+  box-shadow: 0 0 0 1px rgba(255, 225, 170, 0.22) inset;
+}
+
+/* The lighter treatment: a hairline mat, for photos set into a column of text. */
+.photoFrame {
+  padding: 10px;
+  border: 1px solid rgba(212, 160, 42, 0.42);
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(246, 239, 225, 0.07), rgba(246, 239, 225, 0.03));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Consent checkbox ---------- */
+
+.check {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 12px 14px;
+  border: 1px solid var(--paper-border);
+  border-radius: 3px;
+  background: var(--paper-input);
+  cursor: pointer;
+}
+
+.checkBox {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--bronze);
+  cursor: pointer;
+}
+
+.checkText {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(42, 26, 12, 0.72);
 }

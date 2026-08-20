@@ -21,7 +21,7 @@ export function SiteFooter() {
         </div>
         <nav className={s.links}>
           <Link href="/#join">{t("navJoin")}</Link>
-          <Link href="/report">{t("navReport")}</Link>
+          <Link href="/#how">{t("howKicker")}</Link>
           <Link href="/edith">Edith Calvo</Link>
         </nav>
       </div>

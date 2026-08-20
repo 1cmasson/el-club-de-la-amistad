@@ -6,10 +6,31 @@
   gap: clamp(44px, 7vw, 72px);
 }
 
+/* Copy beside a photo of the club at a monthly meeting. */
 .intro {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: clamp(28px, 4vw, 48px);
+  align-items: center;
+}
+
+.introCopy {
   display: grid;
   gap: 20px;
   max-width: 62ch;
+}
+
+.introShot {
+  position: relative;
+  width: 100%;
+  height: clamp(240px, 30vw, 380px);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.introImg {
+  object-fit: cover;
+  object-position: 50% 50%;
 }
 
 .title {
@@ -157,4 +178,17 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 700;
+}
+
+.bioShot {
+  position: relative;
+  width: 100%;
+  height: clamp(220px, 26vw, 340px);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bioImg {
+  object-fit: cover;
+  object-position: 50% 26%;
 }

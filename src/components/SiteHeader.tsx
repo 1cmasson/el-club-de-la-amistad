@@ -13,7 +13,6 @@ import s from "./SiteHeader.module.css";
 const NAV = [
   { href: "/", key: "navHome" },
   { href: "/about", key: "navAbout" },
-  { href: "/report", key: "navReport" },
 ] as const;
 
 export function SiteHeader() {

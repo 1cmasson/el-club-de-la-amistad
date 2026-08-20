@@ -7,10 +7,21 @@ import ui from "./ui.module.css";
 
 type Status = "idle" | "sending" | "sent";
 
+/** Formats keystrokes as a US number: 3055550142 → (305) 555-0142. */
+function maskPhone(raw: string): string {
+  let digits = raw.replace(/\D/g, "");
+  if (digits.startsWith("1")) digits = digits.slice(1);
+  digits = digits.slice(0, 10);
+  if (digits.length <= 3) return digits.length ? `(${digits}` : "";
+  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
 export function VolunteerForm() {
   const { t } = useTranslation();
-  const zones = t("zones", { returnObjects: true }) as string[];
 
+  const [phone, setPhone] = useState("");
+  const [smsOk, setSmsOk] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
@@ -25,6 +36,13 @@ export function VolunteerForm() {
       return;
     }
 
+    // Agreeing to texts without leaving a number is the one incoherent state
+    // this form can reach, so it is the one thing worth blocking on.
+    if (smsOk && phone.replace(/\D/g, "").length !== 10) {
+      setError(t("formErrPhone"));
+      return;
+    }
+
     setError("");
     setStatus("sending");
 
@@ -32,8 +50,8 @@ export function VolunteerForm() {
       await submitForm(VOLUNTEER_FORM, {
         name,
         email,
-        phone: String(data.get("phone") ?? "").trim(),
-        zone: String(data.get("zone") ?? ""),
+        phone,
+        smsConsent: smsOk ? "yes" : "no",
         language: document.documentElement.lang || "en",
       });
       setStatus("sent");
@@ -55,7 +73,15 @@ export function VolunteerForm() {
         <p style={{ margin: 0, fontSize: 16.5, lineHeight: 1.6, color: "rgba(42,26,12,.75)" }}>
           {t("formDoneBody")}
         </p>
-        <button type="button" className={ui.submit} onClick={() => setStatus("idle")}>
+        <button
+          type="button"
+          className={ui.submit}
+          onClick={() => {
+            setPhone("");
+            setSmsOk(false);
+            setStatus("idle");
+          }}
+        >
           {t("formDoneAgain")}
         </button>
       </div>
@@ -109,18 +135,25 @@ export function VolunteerForm() {
           className={ui.input}
           type="tel"
           name="phone"
+          inputMode="tel"
           autoComplete="tel"
+          maxLength={14}
           placeholder="(305) 555-0142"
+          value={phone}
+          onChange={(event) => setPhone(maskPhone(event.target.value))}
         />
+        <span className={ui.fine}>{t("phoneHint")}</span>
       </label>
 
-      <label className={ui.field}>
-        {t("fieldZone")}
-        <select className={ui.select} name="zone" defaultValue={zones[0]}>
-          {zones.map((zone) => (
-            <option key={zone}>{zone}</option>
-          ))}
-        </select>
+      <label className={ui.check}>
+        <input
+          type="checkbox"
+          name="smsConsent"
+          className={ui.checkBox}
+          checked={smsOk}
+          onChange={(event) => setSmsOk(event.target.checked)}
+        />
+        <span className={ui.checkText}>{t("smsConsent")}</span>
       </label>
 
       <button type="submit" className={ui.submit} disabled={status === "sending"}>

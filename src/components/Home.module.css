@@ -38,21 +38,24 @@
   padding-top: 4px;
 }
 
-.heroSealWrap {
+/* The seal leads the copy column, above the headline. */
+.heroSeal {
+  width: clamp(120px, 15vw, 168px);
+  height: auto;
+  justify-self: start;
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.55));
+}
+
+.heroPhotoWrap {
   display: grid;
   place-items: center;
+  min-width: 0;
 }
 
-.heroSeal {
-  width: clamp(240px, 28vw, 380px);
+.heroPhoto {
+  display: block;
+  width: 100%;
   height: auto;
-  filter: drop-shadow(0 24px 50px rgba(0, 0, 0, 0.6));
-  animation: settle 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-@keyframes settle {
-  from { opacity: 0; transform: translateY(14px) scale(0.97); }
-  to   { opacity: 1; transform: none; }
 }
 
 /* ---------- How it works ---------- */
@@ -109,6 +112,36 @@
   font-size: 16px;
   line-height: 1.6;
   color: rgba(246, 239, 225, 0.75);
+}
+
+/* ---------- Gallery band ---------- */
+
+.galleryHead {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.galleryRule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.gallery {
+  display: grid;
+  gap: clamp(16px, 2.4vw, 24px);
+}
+
+.galleryShot {
+  position: relative;
+  width: 100%;
+  height: clamp(240px, 32vw, 430px);
+}
+
+.galleryImg {
+  object-fit: cover;
+  object-position: 50% 42%;
 }
 
 .catsHead {
@@ -175,4 +208,21 @@
   align-items: baseline;
   font-size: 16.5px;
   color: rgba(246, 239, 225, 0.8);
+}
+
+.joinShot {
+  position: relative;
+  width: 100%;
+  height: clamp(260px, 32vw, 400px);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.joinImg {
+  object-fit: cover;
+  object-position: 50% 46%;
+}
+
+.joinPhoto {
+  margin-top: 12px;
 }

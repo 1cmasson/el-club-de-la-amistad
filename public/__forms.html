@@ -8,8 +8,8 @@
   <body>
     <!--
       Netlify discovers forms by parsing static HTML at deploy time, which never
-      sees the React-rendered forms. These two declarations are what it parses;
-      the app posts real submissions here from src/lib/netlifyForms.ts.
+      sees the React-rendered form. This declaration is what it parses; the app
+      posts real submissions here from src/lib/netlifyForms.ts.
       Every field the app sends must appear below or it is dropped silently.
     -->
     <form name="volunteer-signup" data-netlify="true" hidden>
@@ -17,26 +17,8 @@
       <input type="text" name="name" />
       <input type="email" name="email" />
       <input type="tel" name="phone" />
-      <input type="text" name="zone" />
+      <input type="text" name="smsConsent" />
       <input type="text" name="language" />
-    </form>
-
-    <form
-      name="issue-report"
-      data-netlify="true"
-      enctype="multipart/form-data"
-      hidden
-    >
-      <input type="hidden" name="form-name" value="issue-report" />
-      <input type="text" name="reference" />
-      <input type="text" name="category" />
-      <input type="text" name="address" />
-      <input type="text" name="coordinates" />
-      <textarea name="note"></textarea>
-      <input type="email" name="email" />
-      <input type="tel" name="phone" />
-      <input type="text" name="language" />
-      <input type="file" name="photo" />
     </form>
   </body>
 </html>

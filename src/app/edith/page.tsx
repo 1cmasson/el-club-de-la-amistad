@@ -192,11 +192,11 @@ export default function EdithContactPage() {
           </div>
         </div>
 
-        <div className={s.reportBlock}>
-          <span className={s.reportKicker}>{t("contact.reportKicker")}</span>
-          <p className={s.reportBody}>{t("contact.reportBody")}</p>
-          <Link href="/report" className={s.reportCta}>
-            {t("contact.reportCta")}
+        <div className={s.joinBlock}>
+          <span className={s.joinKicker}>{t("contact.joinKicker")}</span>
+          <p className={s.joinBody}>{t("contact.joinBody")}</p>
+          <Link href="/#join" className={s.joinCta}>
+            {t("contact.joinCta")}
           </Link>
         </div>
 
