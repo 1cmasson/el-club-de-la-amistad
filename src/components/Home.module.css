@@ -226,3 +226,92 @@
 .joinPhoto {
   margin-top: 12px;
 }
+
+/* ---------- Breakpoint: the design's 820px line ----------
+ * On phones the framed photo stops being a framed photo. The plaque is
+ * dismantled and the picture fills the hero as a background, with the copy
+ * riding on top of it.
+ *
+ * The photo dissolves via mask-image rather than fading into a flat brown:
+ * .woodstage is a wood-grain texture, so any solid colour stop would leave a
+ * seam at the hero's bottom edge where the grain resumes.
+ */
+@media (max-width: 820px) {
+  .hero {
+    position: relative;
+    grid-template-columns: 1fr;
+    gap: 0;
+    align-items: end;
+    padding-block: 0;
+    /* Tall and editorial. The cap matters: an uncapped 140svw would be a
+       1148px hero at the 820px edge, which only reads well on a phone. */
+    min-height: min(140svw, 620px);
+  }
+
+  .heroPhotoWrap {
+    /* inset:0 resolves against .shell's padding box, so this is already
+       full-bleed - no negative margins needed. */
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  /* No bezel, no mat, no shadow - just the photograph. */
+  .heroPlaque {
+    height: 100%;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .heroPlaqueInner {
+    height: 100%;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+  }
+
+  .heroPhoto {
+    height: 100%;
+    object-fit: cover;
+    /* The photo is taller than it is wide, and so is this box, so cover crops
+       sideways only - this keeps the lineup centred. */
+    object-position: 50% 50%;
+  }
+
+  /* The copy carries its own scrim, bled past the shell gutter. It is a band,
+     not a ramp: alpha 0 at BOTH ends. A gradient that bottomed out opaque
+     would re-create the very seam the mask exists to avoid, since this
+     element's bottom edge is the hero's bottom edge. */
+  .heroCopy {
+    position: relative;
+    z-index: 2;
+    max-width: none;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: clamp(56px, 14svw, 120px) var(--gutter) clamp(36px, 8vw, 56px);
+    background: linear-gradient(
+      to bottom,
+      rgba(28, 17, 8, 0) 0%,
+      rgba(28, 17, 8, 0.62) 34%,
+      rgba(28, 17, 8, 0.7) 62%,
+      rgba(28, 17, 8, 0.3) 88%,
+      rgba(28, 17, 8, 0) 100%
+    );
+  }
+
+  /* The title's own shadow is a hard 0 3px 0 offset, which does not separate
+     the glyphs from a photograph. Give it a blurred companion. */
+  .heroTitle {
+    text-shadow:
+      0 3px 0 rgba(0, 0, 0, 0.35),
+      0 2px 16px rgba(28, 17, 8, 0.75);
+  }
+
+  .heroBody {
+    text-shadow: 0 2px 12px rgba(28, 17, 8, 0.7);
+  }
+}

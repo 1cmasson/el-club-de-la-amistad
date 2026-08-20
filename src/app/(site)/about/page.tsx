@@ -22,15 +22,17 @@ export default function AboutPage() {
           <h1 className={s.title}>{t("aboutTitle")}</h1>
           <p className="lede">{t("aboutLede")}</p>
         </div>
-        <div className={ui.photoFrame}>
-          <div className={s.introShot}>
-            <Image
-              src="/assets/team-lunch.jpg"
-              alt="Club volunteers at a monthly meeting around a table"
-              fill
-              sizes="(max-width: 700px) 92vw, 46vw"
-              className={s.introImg}
-            />
+        <div className={ui.plaque}>
+          <div className={ui.plaqueInner}>
+            <div className={s.introShot}>
+              <Image
+                src="/assets/team-lunch.jpg"
+                alt="Club volunteers at a monthly meeting around a table"
+                fill
+                sizes="(max-width: 700px) 92vw, 46vw"
+                className={s.introImg}
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -64,15 +66,17 @@ export default function AboutPage() {
           <blockquote className={s.quote}>&ldquo;{t("edithQuote")}&rdquo;</blockquote>
           <p className={s.para}>{t("edithBio1")}</p>
           <p className={s.para}>{t("edithBio2")}</p>
-          <div className={ui.photoFrame}>
-            <div className={s.bioShot}>
-              <Image
-                src="/assets/edith-bryan.jpg"
-                alt="Edith Calvo with her son, Mayor Bryan Calvo"
-                fill
-                sizes="(max-width: 700px) 92vw, 56vw"
-                className={s.bioImg}
-              />
+          <div className={ui.plaque}>
+            <div className={ui.plaqueInner}>
+              <div className={s.bioShot}>
+                <Image
+                  src="/assets/edith-bryan.jpg"
+                  alt="Edith Calvo with her son, Mayor Bryan Calvo"
+                  fill
+                  sizes="(max-width: 700px) 92vw, 56vw"
+                  className={s.bioImg}
+                />
+              </div>
             </div>
           </div>
         </div>

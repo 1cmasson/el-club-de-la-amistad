@@ -45,14 +45,19 @@ export default function HomePage() {
           </div>
         </div>
         <div className={s.heroPhotoWrap}>
-          <div className={ui.plaque}>
-            <div className={ui.plaqueInner}>
+          {/* The heroPlaque/heroPlaqueInner classes are hooks for the 820px
+              block in Home.module.css, which dismantles the frame on phones.
+              They cannot be written as descendant selectors there: ui.plaque
+              is a different CSS Module, so its hashed class never matches. */}
+          <div className={`${ui.plaque} ${s.heroPlaque}`}>
+            <div className={`${ui.plaqueInner} ${s.heroPlaqueInner}`}>
               <Image
                 src="/assets/volunteers-lineup.jpg"
                 alt="Club de la Amistad volunteers"
                 width={1080}
                 height={1434}
-                sizes="(max-width: 820px) 92vw, 44vw"
+                // 100vw below the breakpoint: the photo goes full-bleed there.
+                sizes="(max-width: 820px) 100vw, 44vw"
                 className={s.heroPhoto}
                 priority
               />
