@@ -23,13 +23,14 @@ export default function HomePage() {
       <section className={`shell ${s.hero}`}>
         <div className={s.heroCopy}>
           <Image
-            src="/assets/seal.png"
+            src="/assets/seal.webp"
             alt="Club de la Amistad para un Hialeah Mejor Voluntario"
-            width={900}
-            height={900}
-            // Renders at clamp(120px, 15vw, 168px) — without this the srcset
-            // tops out at 1920w for a 168px slot.
-            sizes="168px"
+            width={512}
+            height={512}
+            // Mirrors clamp(120px, 15vw, 168px) from Home.module.css: 15vw
+            // reaches 120px at an 800px viewport and 168px at 1120px. A flat
+            // "168px" here made phones pull the 256w rung for a 120px slot.
+            sizes="(max-width: 800px) 120px, (max-width: 1120px) 15vw, 168px"
             className={s.heroSeal}
             priority
           />
@@ -52,12 +53,12 @@ export default function HomePage() {
           <div className={`${ui.plaque} ${s.heroPlaque}`}>
             <div className={`${ui.plaqueInner} ${s.heroPlaqueInner}`}>
               <Image
-                src="/assets/volunteers-lineup.jpg"
+                src="/assets/volunteers-lineup.webp"
                 alt="Club de la Amistad volunteers"
                 width={1080}
                 height={1434}
                 // 100vw below the breakpoint: the photo goes full-bleed there.
-                sizes="(max-width: 820px) 100vw, 44vw"
+                sizes="(max-width: 820px) 100vw, (max-width: 1320px) 44vw, 580px"
                 className={s.heroPhoto}
                 priority
               />
@@ -97,10 +98,10 @@ export default function HomePage() {
             <div className={ui.plaqueInner}>
               <div className={s.galleryShot}>
                 <Image
-                  src="/assets/team-framed-gate.jpg"
+                  src="/assets/team-framed-gate.webp"
                   alt="Club de la Amistad volunteers holding a framed photograph of the Hialeah gate"
                   fill
-                  sizes="(max-width: 1320px) 92vw, 1240px"
+                  sizes="(max-width: 1320px) 92vw, 1160px"
                   className={s.galleryImg}
                 />
               </div>
@@ -141,10 +142,10 @@ export default function HomePage() {
             <div className={`${ui.photoFrame} ${s.joinPhoto}`}>
               <div className={s.joinShot}>
                 <Image
-                  src="/assets/festival-mayor.jpg"
+                  src="/assets/festival-mayor.webp"
                   alt="Edith Calvo with Mayor Bryan Calvo at a Hialeah festival"
                   fill
-                  sizes="(max-width: 820px) 92vw, 46vw"
+                  sizes="(max-width: 820px) 92vw, (max-width: 1320px) 40vw, 400px"
                   className={s.joinImg}
                 />
               </div>

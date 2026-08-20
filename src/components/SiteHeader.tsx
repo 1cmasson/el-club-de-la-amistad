@@ -32,10 +32,14 @@ export function SiteHeader() {
       <div className={s.bar}>
         <Link href="/" className={s.brand} aria-label={t("navHome")}>
           <Image
-            src="/assets/seal.png"
+            src="/assets/seal.webp"
             alt="Club de la Amistad seal"
             width={68}
             height={68}
+            // Without sizes, a fixed-size image only gets a 1x/2x srcset, whose
+            // 2x rung here is 256w — for a mark that is 68px at most and 44px on
+            // a phone. Declaring the three CSS widths opens the full ladder.
+            sizes="(max-width: 430px) 44px, (max-width: 820px) 52px, 68px"
             className={s.brandSeal}
             priority
           />

@@ -9,7 +9,7 @@ import s from "@/components/ContactCard.module.css";
 
 const PHONE_DISPLAY = "(786) 801-9879";
 const PHONE_E164 = "+17868019879";
-const PORTRAIT = "/assets/edith-calvo.png";
+const PORTRAIT = "/assets/edith-calvo-480.webp";
 
 /** Square-crops the portrait to a base64 JPEG so the vCard carries a photo. */
 function loadPortraitBase64(): Promise<string> {
@@ -98,10 +98,11 @@ export default function EdithContactPage() {
         <div className={s.top}>
           <Link href="/" className={s.brand}>
             <Image
-              src="/assets/seal.png"
+              src="/assets/seal.webp"
               alt="Club de la Amistad seal"
               width={38}
               height={38}
+              sizes="38px"
               style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,.5))", flex: "none" }}
             />
             <span style={{ display: "grid", gap: 2, minWidth: 0 }}>

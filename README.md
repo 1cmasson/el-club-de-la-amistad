@@ -88,24 +88,58 @@ photographs of the club, a favicon family, and two Open Graph cards.
 
 | Group | Files |
 | --- | --- |
-| Photographs | `volunteers-lineup.jpg` (hero), `team-framed-gate.jpg` (gallery band), `festival-mayor.jpg` (join section), `team-lunch.jpg` and `edith-bryan.jpg` (about) |
+| Photographs | `volunteers-lineup.webp` (hero), `team-framed-gate.webp` (gallery band), `festival-mayor.webp` (join section), `team-lunch.webp` and `edith-bryan.webp` (about) |
+| CSS backgrounds | `wood-grain.webp` (1024×750 tile), `hialeah-gate.webp` + `hialeah-gate-480.webp` (behind the founder portrait) |
+| Portrait and seal | `edith-calvo.webp` (900×945 cutout), `edith-calvo-480.webp` (`/edith`), `seal.webp` (512×512) |
 | Favicons | `favicon-16/32/48/192/512.png`, `favicon-maskable-512.png`, `apple-touch-icon-180.png` |
 | Social cards | `og-home.jpg`, `og-edith.jpg` — 1200×630 |
 
-The photographs, favicons and cards came from the design's brand handoff
-bundle. Two things about them:
+### The image pipeline
 
+`npm run images` runs `scripts/optimize-images.mjs`, which re-encodes everything
+in `public/assets/` from an explicit manifest — photos to WebP at native size,
+the OG cards to mozjpeg, the large icons to quantized PNG. It is idempotent:
+`scripts/image-ledger.json` records a hash per output and already-optimized files
+are skipped, so re-running never stacks another lossy pass. `--force` overrides
+that, but the script deletes each source once its output exists, so re-encoding
+from an original means `git show`-ing it back first.
+
+The photographs, favicons and cards came from the design's brand handoff
+bundle. Things to keep in mind when replacing one:
+
+- **Photos rendered through `next/image` stay at native resolution.** Next builds
+  the per-device `srcset` itself, so downscaling a master permanently caps
+  quality on 2x/3x screens. Only `seal` and `edith-calvo-480` are deliberately
+  resized, because their render sizes are fixed and small.
+- **`sizes` values are measured, not guessed** — every one was read off the live
+  layout at 390 / 720 / 1000 / 1440 / 2560px. Two gotchas behind the odd-looking
+  numbers: a `vw` unit anywhere in `sizes` makes Next drop every srcset candidate
+  below `640 × (smallest vw)`, and a fixed-size `<Image>` with no `sizes` gets
+  only a 1x/2x pair — which is why the header seal spells out its three CSS
+  widths.
+- **The OG cards must stay `.jpg` under these exact names.** The absolute URLs are
+  public and scrapers cache them; several also handle WebP poorly.
 - **Do not regenerate the 16/32/48 favicons with a plain resize.** They were
   exported with a deliberate contrast and saturation boost so the seal's gold
-  ring survives downscaling; a naive resize turns them to mush.
+  ring survives downscaling; a naive resize turns them to mush. They are left out
+  of the script's manifest for that reason.
 - The bundle also contained newer `seal-v12.png`, `wood-grain.png`,
   `edith-calvo.png` and `hialeah-gate.jpg`. **Those four were deliberately not
   adopted** — the repo keeps its own versions, so nothing in the CSS or the
   components had to change. If you ever do adopt them, note that the seal goes
   from 900×900 to 1275×1233 and the wood tile from 1024×750 to 1024×1024, so
-  `.woodstage` in `globals.css` needs its `background-size` updated.
+  `.woodstage` in `globals.css` **and** `.stage` in `ContactCard.module.css` need
+  their `background-size` updated. `wood-grain.webp` is written at exactly
+  1024×750 to keep those values honest.
 
-`edith-calvo.png` is a **cutout with a transparent background**, which is what
+`.woodstage`, `.stage` and `.portraitFrame` are CSS backgrounds, so `next/image`
+never touches them and they carry their own responsive handling: each declares a
+plain `url()` first and an `image-set()` override second, because an
+`image-set()` the browser cannot parse invalidates the entire declaration —
+taking the gradient layer with it. `.portraitFrame` also swaps down to
+`hialeah-gate-480.webp` below 701px.
+
+`edith-calvo.webp` is a **cutout with a transparent background**, which is what
 the design intended: it sits on a gold-tinted disc, so the tint shows through
 around her rather than a photographic background. Keep the alpha if you ever
 replace it — a flattened JPEG would show as a hard rectangle inside the circle.

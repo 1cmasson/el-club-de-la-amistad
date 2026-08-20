@@ -26,10 +26,10 @@ export default function AboutPage() {
           <div className={ui.plaqueInner}>
             <div className={s.introShot}>
               <Image
-                src="/assets/team-lunch.jpg"
+                src="/assets/team-lunch.webp"
                 alt="Club volunteers at a monthly meeting around a table"
                 fill
-                sizes="(max-width: 700px) 92vw, 46vw"
+                sizes="(max-width: 700px) 88vw, (max-width: 1180px) 42vw, 490px"
                 className={s.introImg}
               />
             </div>
@@ -42,10 +42,10 @@ export default function AboutPage() {
           <div className={s.portraitFrame}>
             <div className={s.portraitDisc}>
               <Image
-                src="/assets/edith-calvo.png"
+                src="/assets/edith-calvo.webp"
                 alt="Edith Calvo"
                 fill
-                sizes="(max-width: 700px) 60vw, 300px"
+                sizes="(max-width: 700px) 64vw, 380px"
                 className={s.portraitImg}
               />
             </div>
@@ -70,10 +70,10 @@ export default function AboutPage() {
             <div className={ui.plaqueInner}>
               <div className={s.bioShot}>
                 <Image
-                  src="/assets/edith-bryan.jpg"
+                  src="/assets/edith-bryan.webp"
                   alt="Edith Calvo with her son, Mayor Bryan Calvo"
                   fill
-                  sizes="(max-width: 700px) 92vw, 56vw"
+                  sizes="(max-width: 700px) 78vw, (max-width: 1180px) 38vw, 450px"
                   className={s.bioImg}
                 />
               </div>

@@ -12,7 +12,14 @@ export function SiteFooter() {
     <footer className={s.footer}>
       <div className={`shell ${s.inner}`}>
         <div className={s.identity}>
-          <Image src="/assets/seal.png" alt="" width={40} height={40} className={s.seal} />
+          <Image
+            src="/assets/seal.webp"
+            alt=""
+            width={40}
+            height={40}
+            sizes="40px"
+            className={s.seal}
+          />
           <p className={s.note}>
             Club de la Amistad para un Hialeah Mejor Voluntario
             <br />
