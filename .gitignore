@@ -48,3 +48,8 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Claude Code worktrees. Each carries its own node_modules, and the rule above
+# is root-anchored (/node_modules), so without this a plain `git add -A` stages
+# a few hundred MB of dependencies.
+.claude/worktrees/
