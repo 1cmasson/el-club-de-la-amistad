@@ -4,15 +4,16 @@
   justify-content: center;
   background-color: var(--wood);
   background-image:
-    repeating-linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.3) 0 2px,
-      rgba(255, 235, 190, 0.035) 2px 5px,
-      rgba(0, 0, 0, 0.14) 5px 9px,
-      rgba(0, 0, 0, 0) 9px 28px
+    linear-gradient(
+      172deg,
+      rgba(74, 45, 25, 0.35) 0%,
+      rgba(30, 18, 8, 0.55) 58%,
+      rgba(46, 27, 14, 0.35) 100%
     ),
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0 1px, rgba(0, 0, 0, 0) 1px 14px),
-    linear-gradient(175deg, #4a2d19 0%, #2c1a0c 62%, #3a2312 100%);
+    url("/assets/wood-grain.jpg");
+  background-size: auto, 1024px 750px;
+  background-repeat: no-repeat, repeat;
+  background-blend-mode: soft-light, normal;
 }
 
 .card {
