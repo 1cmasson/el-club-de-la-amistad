@@ -21,7 +21,7 @@ export function SiteFooter() {
             className={s.seal}
           />
           <p className={s.note}>
-            Club de la Amistad para un Hialeah Mejor Voluntario
+            Club de la Amistad por un Hialeah Mejor Voluntario
             <br />
             {t("footerNote")}
           </p>

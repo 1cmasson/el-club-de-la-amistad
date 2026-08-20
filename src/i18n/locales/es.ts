@@ -1,7 +1,7 @@
 import type en from "./en";
 
 const es: typeof en = {
-  tagline: "para un Hialeah mejor",
+  tagline: "por un Hialeah mejor",
   navHome: "Inicio",
   navAbout: "Nosotros",
   navJoin: "Ser voluntario",
@@ -40,7 +40,7 @@ const es: typeof en = {
   fieldPhone: "Teléfono móvil",
   phoneHint: "Móvil en EE. UU. — para enviarte la hora del entrenamiento.",
   smsConsent:
-    "Acepto recibir mensajes de texto del Club de la Amistad para un Hialeah Mejor sobre el entrenamiento de voluntarios y los turnos de reporte, al número móvil de arriba. El consentimiento no es obligatorio para ser voluntario. La frecuencia de mensajes varía; pueden aplicar tarifas de mensajes y datos. Responde STOP para darte de baja o HELP para ayuda.",
+    "Acepto recibir mensajes de texto del Club de la Amistad por un Hialeah Mejor sobre el entrenamiento de voluntarios y los turnos de reporte, al número móvil de arriba. El consentimiento no es obligatorio para ser voluntario. La frecuencia de mensajes varía; pueden aplicar tarifas de mensajes y datos. Responde STOP para darte de baja o HELP para ayuda.",
   formSubmit: "Inscríbeme",
   formSending: "Enviando…",
   formFine:
@@ -57,7 +57,7 @@ const es: typeof en = {
   aboutKicker: "Nosotros",
   aboutTitle: "Un club de vecinos, no de inspectores",
   aboutLede:
-    "El Club de la Amistad para un Hialeah Mejor es una organización de voluntarios que pone ojos amables en cada calle de Hialeah, y convierte lo que ven en órdenes de trabajo para la ciudad.",
+    "El Club de la Amistad por un Hialeah Mejor es una organización de voluntarios que pone ojos amables en cada calle de Hialeah, y convierte lo que ven en órdenes de trabajo para la ciudad.",
   edithRole: "Fundadora y presidenta",
   edithQuote: "Si lo vemos primero, la ciudad lo arregla más rápido.",
   edithBio1:
@@ -118,7 +118,7 @@ const es: typeof en = {
     joinBody:
       "Regístrate para cuidar tus propias cuadras: toma unos dos minutos.",
     joinCta: "Hazte voluntario",
-    foot: "Club de la Amistad para un Hialeah Mejor · Organización sin fines de lucro al servicio de Hialeah, Florida.",
+    foot: "Club de la Amistad por un Hialeah Mejor · Organización sin fines de lucro al servicio de Hialeah, Florida.",
     vcardTitle: "Fundadora y presidenta",
     vcardNote:
       "Solo llamadas, no mensajes de texto. Reporta grafiti, aceras rotas o luces apagadas en Hialeah.",

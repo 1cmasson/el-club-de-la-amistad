@@ -74,7 +74,7 @@ export default function EdithContactPage() {
       "VERSION:3.0",
       "N:Calvo;Edith;;;",
       "FN:Edith Calvo",
-      "ORG:Club de la Amistad para un Hialeah Mejor",
+      "ORG:Club de la Amistad por un Hialeah Mejor",
       `TITLE:${t("contact.vcardTitle")}`,
       `TEL;TYPE=CELL,VOICE:${PHONE_E164}`,
       "ADR;TYPE=WORK:;;;Hialeah;FL;;USA",
@@ -189,7 +189,7 @@ export default function EdithContactPage() {
           </div>
           <div className={s.detailRow}>
             <span className={s.detailLabel}>{t("contact.orgLabel")}</span>
-            <span className={s.detailOrg}>Club de la Amistad para un Hialeah Mejor</span>
+            <span className={s.detailOrg}>Club de la Amistad por un Hialeah Mejor</span>
           </div>
         </div>
 

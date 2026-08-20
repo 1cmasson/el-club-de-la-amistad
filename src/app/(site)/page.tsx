@@ -24,7 +24,7 @@ export default function HomePage() {
         <div className={s.heroCopy}>
           <Image
             src="/assets/seal.webp"
-            alt="Club de la Amistad para un Hialeah Mejor Voluntario"
+            alt="Club de la Amistad por un Hialeah Mejor Voluntario"
             width={512}
             height={512}
             // Mirrors clamp(120px, 15vw, 168px) from Home.module.css: 15vw

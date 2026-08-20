@@ -6,7 +6,7 @@ import type { MetadataRoute } from "next";
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Club de la Amistad para un Hialeah Mejor",
+    name: "Club de la Amistad por un Hialeah Mejor",
     short_name: "Hialeah Mejor",
     start_url: "/",
     display: "standalone",

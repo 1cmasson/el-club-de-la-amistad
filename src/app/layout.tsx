@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   // Next fails the build on a relative image with no metadataBase.
   metadataBase: new URL("https://porunhialeahmejor.com"),
   title: {
-    default: "Club de la Amistad para un Hialeah Mejor",
+    default: "Club de la Amistad por un Hialeah Mejor",
     template: "%s · Club de la Amistad",
   },
   description:

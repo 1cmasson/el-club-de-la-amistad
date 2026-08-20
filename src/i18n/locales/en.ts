@@ -39,7 +39,7 @@ const en = {
   fieldPhone: "Mobile phone",
   phoneHint: "US mobile — so we can text you the training time.",
   smsConsent:
-    "I agree to receive text messages from Club de la Amistad para un Hialeah Mejor about volunteer training and reporting shifts, at the mobile number above. Consent is not required to volunteer. Message frequency varies; message and data rates may apply. Reply STOP to unsubscribe, HELP for help.",
+    "I agree to receive text messages from Club de la Amistad por un Hialeah Mejor about volunteer training and reporting shifts, at the mobile number above. Consent is not required to volunteer. Message frequency varies; message and data rates may apply. Reply STOP to unsubscribe, HELP for help.",
   formSubmit: "Sign me up",
   formSending: "Sending…",
   formFine:
@@ -56,7 +56,7 @@ const en = {
   aboutKicker: "About us",
   aboutTitle: "A club of neighbors, not inspectors",
   aboutLede:
-    "Club de la Amistad para un Hialeah Mejor is a volunteer organization that puts friendly eyes on every street of Hialeah — and turns what they see into work orders for the city that maintains them.",
+    "Club de la Amistad por un Hialeah Mejor is a volunteer organization that puts friendly eyes on every street of Hialeah — and turns what they see into work orders for the city that maintains them.",
   edithRole: "Founder & President",
   edithQuote: "If we see it first, the city can fix it faster.",
   edithBio1:
@@ -117,7 +117,7 @@ const en = {
     joinBody:
       "Sign up to keep watch over your own blocks — it takes about two minutes.",
     joinCta: "Become a volunteer",
-    foot: "Club de la Amistad para un Hialeah Mejor · A volunteer nonprofit serving Hialeah, Florida.",
+    foot: "Club de la Amistad por un Hialeah Mejor · A volunteer nonprofit serving Hialeah, Florida.",
     vcardTitle: "Founder & President",
     vcardNote:
       "Phone calls only — no text messages. Report graffiti, broken sidewalks or streetlights out in Hialeah.",
