@@ -96,13 +96,21 @@ photographs of the club, a favicon family, and two Open Graph cards.
 
 ### The image pipeline
 
-`npm run images` runs `scripts/optimize-images.mjs`, which re-encodes everything
-in `public/assets/` from an explicit manifest — photos to WebP at native size,
-the OG cards to mozjpeg, the large icons to quantized PNG. It is idempotent:
-`scripts/image-ledger.json` records a hash per output and already-optimized files
-are skipped, so re-running never stacks another lossy pass. `--force` overrides
-that, but the script deletes each source once its output exists, so re-encoding
-from an original means `git show`-ing it back first.
+`npm run images` runs `scripts/optimize-images.mjs`, which re-encodes the repo's
+rasters from an explicit manifest — photos to WebP at native size, the OG cards
+to mozjpeg, the large icons to quantized PNG. Entries default to `public/assets/`;
+an entry may set `dir` to reach elsewhere, which is how `home-desktop.webp` at
+the repo root is covered.
+
+It is idempotent: `scripts/image-ledger.json` records a hash per output and
+already-optimized files are skipped, so re-running never stacks another lossy
+pass. `--force` re-derives outputs whose source still exists, but refuses entries
+that encode a file onto itself — there the source *is* the previous output. To
+redo one of those, or any entry whose source a previous run consumed, restore the
+original first with `git show <ref>:<path>`.
+
+Re-shooting the screenshot is the one routine case: save it as `home-desktop.png`
+as usual and run `npm run images`, which converts it and removes the PNG.
 
 The photographs, favicons and cards came from the design's brand handoff
 bundle. Things to keep in mind when replacing one:

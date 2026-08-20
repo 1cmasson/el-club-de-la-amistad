@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Re-encodes everything in public/assets to its shipping form.
+ * Re-encodes the repo's raster images to their shipping form — everything the
+ * site serves out of public/assets, plus the reference screenshot at the root.
  *
  * The manifest below is explicit on purpose — a directory sweep would happily
  * flatten the alpha off the seal or resize the 16/32/48 favicons, both of which
@@ -30,17 +31,19 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const ASSETS = path.join(ROOT, "public/assets");
 const LEDGER = path.join(ROOT, "scripts/image-ledger.json");
 
 const FORCE = process.argv.includes("--force");
 
 /**
- * `in`  — source filename under public/assets
+ * `in`  — source filename, relative to `dir`
  * `out` — output filename; when it differs from `in`, the source is deleted
+ * `dir` — repo-relative directory, defaulting to public/assets
  * `keepInput` — output is a derivative, leave the source alone
  * `resize` — [w, h]; omit to keep native dimensions
  */
+const ASSETS_DIR = "public/assets";
+const at = (entry, name) => path.join(ROOT, entry.dir ?? ASSETS_DIR, name);
 const MANIFEST = [
   // --- Photos rendered through next/image -----------------------------------
   // Next generates the per-device srcset itself, so these masters stay at native
@@ -105,6 +108,13 @@ const MANIFEST = [
   { in: "favicon-maskable-512.png", out: "favicon-maskable-512.png", png: true },
   { in: "favicon-192.png", out: "favicon-192.png", png: true },
   { in: "apple-touch-icon-180.png", out: "apple-touch-icon-180.png", png: true },
+
+  // --- Reference screenshot -------------------------------------------------
+  // Not served to anyone — it lives at the repo root, so it costs clone time,
+  // not page weight. Kept at its native 1440x3600 because downscaling would
+  // blur the UI text it exists to show; q82 leaves that text pixel-legible at
+  // 1:1 while dropping three quarters of the bytes.
+  { in: "home-desktop.png", out: "home-desktop.webp", dir: ".", webp: { quality: 82, effort: 6 } },
 ];
 
 const PNG_OPTS = { compressionLevel: 9, effort: 10, palette: true };
@@ -131,8 +141,8 @@ async function main() {
   let changed = 0;
 
   for (const entry of MANIFEST) {
-    const src = path.join(ASSETS, entry.in);
-    const dest = path.join(ASSETS, entry.out);
+    const src = at(entry, entry.in);
+    const dest = at(entry, entry.out);
 
     // Already optimized on a previous run: the output is present and matches the
     // hash we recorded for it. Skip, so quality never degrades generationally.
@@ -197,9 +207,9 @@ async function main() {
 
   // Sources kept only to feed a derivative are deleted once every entry that
   // reads them has run.
-  for (const name of new Set(MANIFEST.filter((e) => e.keepInput).map((e) => e.in))) {
-    const stillNeeded = MANIFEST.some((e) => e.in === name && e.out === name);
-    if (!stillNeeded) await fs.rm(path.join(ASSETS, name), { force: true });
+  for (const entry of MANIFEST.filter((e) => e.keepInput)) {
+    const stillNeeded = MANIFEST.some((e) => e.in === entry.in && e.out === entry.in);
+    if (!stillNeeded) await fs.rm(at(entry, entry.in), { force: true });
   }
 
   await fs.writeFile(LEDGER, JSON.stringify(ledger, null, 2) + "\n");
