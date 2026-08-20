@@ -24,7 +24,7 @@ export default function HomePage() {
         <div className={s.heroCopy}>
           <Image
             src="/assets/seal.png"
-            alt="Club de la Amistad para un Hialeah Mejor Voluntario"
+            alt="Club de la Amistad por un Hialeah Mejor Voluntario"
             width={900}
             height={900}
             // Renders at clamp(120px, 15vw, 168px) — without this the srcset

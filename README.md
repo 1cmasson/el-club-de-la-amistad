@@ -1,4 +1,4 @@
-# Club de la Amistad para un Hialeah Mejor
+# Club de la Amistad por un Hialeah Mejor
 
 Website for the volunteer club that walks Hialeah block by block, photographs
 what the city needs to repair, and files it with the right department.

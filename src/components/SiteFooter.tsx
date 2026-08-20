@@ -14,7 +14,7 @@ export function SiteFooter() {
         <div className={s.identity}>
           <Image src="/assets/seal.png" alt="" width={40} height={40} className={s.seal} />
           <p className={s.note}>
-            Club de la Amistad para un Hialeah Mejor Voluntario
+            Club de la Amistad por un Hialeah Mejor Voluntario
             <br />
             {t("footerNote")}
           </p>
