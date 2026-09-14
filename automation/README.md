@@ -21,6 +21,29 @@ volunteer-signup  ──▶  Netlify Forms  ──▶  outgoing webhook  ──�
 code that actually runs lives in the Apps Script project bound to the Sheet.
 **Editing a file here changes nothing until someone pastes it in and redeploys.**
 
+## What is live right now
+
+Wired up and verified end to end on **14 Sep 2026**. A real submission through
+`porunhialeahmejor.com/#join` reached the sheet in under 12 seconds.
+
+| | |
+| --- | --- |
+| Sheet | **Club de la Amistad - Voluntarios**, owned by Carlos — id `1GtUGqWxhjQgK1veRuJLjL3EnK6w-FazYcoBN0T2AEPI` |
+| Apps Script | **Club de la Amistad - ingesta de voluntarios** (standalone, `SPREADSHEET_ID` set) |
+| Web app | Deployed "v1 - webhook de Netlify", Execute as Me, access Anyone |
+| Netlify hook | id `6aa8074ad56b0f760d0dcdb7`, `url` / `submission_created`, scoped to form `6a862edf79ed4d0008203c4c` |
+| OAuth scopes | Spreadsheets only. "Send email as you" was **declined** — `NOTIFY_EMAIL` is empty, so `notify_()` returns before it ever touches `MailApp`. Granting it later is required only if you set that constant. |
+| Backfill | The one historical submission (24 Aug) was replayed through the live endpoint, so it is in the sheet with its real Netlify id and cannot duplicate. |
+
+Verified at go-live: wrong token writes nothing; a non-`volunteer-signup` form is
+ignored; a replayed delivery dedupes; the warning-only protection prompts before
+an accidental edit to a script-owned column; and the hook was still `disabled=false`
+after a successful delivery.
+
+**Still outstanding:** the sheet is not shared with Edith and no e-mail
+notifications exist, because nobody has supplied her address. Both are one step
+each once it is known.
+
 ## Setup
 
 1. Create the Sheet *Club de la Amistad — Voluntarios*. Rename tab 1 to `Voluntarios`.
