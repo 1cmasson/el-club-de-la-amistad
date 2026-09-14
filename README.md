@@ -57,8 +57,11 @@ URL-encoded.
 no submission. Keep the two in sync. The form sends `name`, `email`, `phone`,
 `smsConsent` and `language`.
 
-Submissions appear under **Netlify → your site → Forms**. Turn on email
-notifications there so signups reach a person.
+Submissions appear under **Netlify → your site → Forms**, and are mirrored into
+a Google Sheet Edith works from — see `automation/`. The mirror is **one-way and
+append-only**: Netlify stays the system of record, the Sheet is a working
+projection, and the script never rewrites a row she has annotated. Turn on email
+notifications too, so a signup reaches a person even if the mirror is down.
 
 > **Form detection is off by default on new Netlify sites** and had to be
 > enabled on this one (`processing_settings.ignore_html_forms` → `false`, i.e.
@@ -66,6 +69,13 @@ notifications there so signups reach a person.
 > Netlify dashboard, **not in this repo** — it cannot be set from
 > `netlify.toml`. If this site is ever recreated, moved to another account, or
 > forked, forms go quiet with no error anywhere until it is re-enabled.
+>
+> The **outgoing webhook** that feeds the Google Sheet lives in the same place
+> and fails the same way (Site configuration → Notifications → Emails and
+> webhooks). Netlify auto-disables a notification after repeated delivery
+> failures, so if the Sheet stops filling, check that toggle before anything
+> else. Its URL carries a shared token; the token itself lives in Apps Script
+> Script Properties, which is why nothing secret is needed here.
 
 ## Deployment
 
@@ -186,10 +196,12 @@ modern browsers use the PNG links, and an `app/favicon.ico` would emit a
 
 ## Things to replace before launch
 
-- **`porunhialeahmejor.com` must actually resolve to this site.** Every link
-  preview points at `https://porunhialeahmejor.com/assets/og-*.jpg`; until DNS
-  is cut over, shared links render with a broken image and no card.
+- ~~**`porunhialeahmejor.com` must actually resolve to this site.**~~ Done — it
+  is the site's live custom domain, so link previews resolve.
 - **The signup collects SMS consent but nothing can text yet.** The consent
   wording promises STOP/HELP handling and a specific sender. Before anyone
   sends a single message, the number needs A2P 10DLC or toll-free
-  registration — collecting consent is the easy half.
+  registration — collecting consent is the easy half. Until then the Sheet
+  column is headed `¿Permitió mensajes? (aún no enviamos)` and carries a note
+  saying so, and **nothing in the Sheet offers a tappable way to text someone** —
+  that affordance would read as permission the infrastructure cannot honour.
