@@ -40,9 +40,26 @@ ignored; a replayed delivery dedupes; the warning-only protection prompts before
 an accidental edit to a script-owned column; and the hook was still `disabled=false`
 after a successful delivery.
 
-**Still outstanding:** the sheet is not shared with Edith and no e-mail
-notifications exist, because nobody has supplied her address. Both are one step
-each once it is known.
+The sheet is shared with the club account **clubporunhialeahmejor@gmail.com**
+as **Editor**, and both e-mail notifications are live (that address and Carlos's),
+so every signup reaches a person even if the Sheets mirror is ever down. General
+access stays **Restricted** — the sheet holds real names and phone numbers and
+must not become link-shareable.
+
+**One operational caveat.** Netlify auto-disabled the outgoing webhook once,
+during token rotation, after a run of deliberately-failing test deliveries. It
+was re-enabled and has stayed enabled through clean deliveries since. Because
+Apps Script always answers 302, Netlify cannot tell a success from a failure, so
+this can recur — and it fails *silently*. If the sheet ever stops filling, check
+`disabled` on the hook first:
+
+```
+netlify api listHooksBySiteId --data '{"site_id":"a0f55919-29e9-4909-8014-a3f00cfc6ca0"}'
+netlify api enableHook        --data '{"hook_id":"6aa8074ad56b0f760d0dcdb7"}'
+```
+
+The permanent fix, if it recurs, is the forwarding Netlify Function described
+below — it returns a clean 200 so Netlify never sees a redirect.
 
 ## Setup
 
