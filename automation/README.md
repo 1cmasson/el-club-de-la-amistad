@@ -26,7 +26,18 @@ code that actually runs lives in the Apps Script project bound to the Sheet.
 1. Create the Sheet *Club de la Amistad — Voluntarios*. Rename tab 1 to `Voluntarios`.
 2. **File → Settings** → Locale **Español (Estados Unidos)**, Time zone **New York**.
    The locale is what makes her own typed dates parse day-first.
-3. **Extensions → Apps Script.** Paste each `.gs` file into a file of the same name.
+3. Create the Apps Script project and paste each `.gs` file into a file of the
+   same name. Two ways, and the only difference between them is one constant:
+   - **Bound** (Extensions → Apps Script from inside the sheet): leave
+     `SPREADSHEET_ID = ''`. `getActive()` resolves the sheet.
+   - **Standalone** (script.google.com → New project): set `SPREADSHEET_ID` to the
+     sheet id from its URL. This is how the live one is deployed, because a bound
+     project can only be created by clicking through the Sheets UI and this needs
+     to be reproducible from the repo.
+
+   Set the constant; do not edit anything else. Keeping the difference in config
+   rather than in an edited copy is what stops the deployed script from drifting
+   away from this repo.
 4. Generate a token: `openssl rand -hex 24`. In the editor, **Project Settings
    (gear) → Script Properties → Add script property**, name `WEBHOOK_TOKEN`.
    *This is why no secret reaches git.*

@@ -32,6 +32,28 @@ var TIMEZONE       = 'America/New_York';
 /** Optional: an address for hard failures. Leave '' to disable e-mail alerts. */
 var NOTIFY_EMAIL = '';
 
+/**
+ * Which spreadsheet this writes to.
+ *
+ * Leave '' when the script is **bound** to the sheet (Extensions → Apps Script):
+ * getActive() then resolves it. Set it to the sheet id when the script is a
+ * **standalone** project, which is how this is actually deployed — a bound script
+ * can only be created through the Sheets UI, and the deployment needs to be
+ * reproducible from this file alone.
+ *
+ * This is the ONLY difference between the two setups. Keeping it a config value
+ * rather than an edited copy is what stops the deployed code from drifting away
+ * from the code in this repo.
+ */
+var SPREADSHEET_ID = '';
+
+/** The target spreadsheet, bound or standalone. */
+function ss_() {
+  return SPREADSHEET_ID
+    ? SpreadsheetApp.openById(SPREADSHEET_ID)
+    : SpreadsheetApp.getActive();
+}
+
 /** Who she should call if the sheet looks wrong. Leave the phone '' to omit it. */
 var HELP_NAME  = 'Carlos';
 var HELP_PHONE = '';
@@ -201,7 +223,7 @@ function findRowById_(sheet, id) {
 // ------------------------------------------------------------- sheet state ---
 
 function getSheet_() {
-  var ss = SpreadsheetApp.getActive();
+  var ss = ss_();
   var sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     // Renamed or deleted. Recreating is the only branch that never loses a row.
@@ -233,7 +255,7 @@ function headersOk_(sheet) {
 }
 
 function quarantine_(id, formName, data, reason) {
-  var ss = SpreadsheetApp.getActive();
+  var ss = ss_();
   var t = ss.getSheetByName(QUARANTINE_NAME) || ss.insertSheet(QUARANTINE_NAME);
   if (t.getLastRow() === 0) {
     t.appendRow(['Cuándo', 'Motivo', 'Formulario', 'ID', 'Datos']);
@@ -285,7 +307,7 @@ function colLetter_(n) {
 function logError_(err, e) {
   console.error(err && err.stack ? err.stack : String(err));
   try {
-    var ss = SpreadsheetApp.getActive();
+    var ss = ss_();
     var t = ss.getSheetByName(ERROR_SHEET_NAME) || ss.insertSheet(ERROR_SHEET_NAME);
     if (t.getLastRow() === 0) {
       t.appendRow(['Cuándo', 'Error', 'Cuerpo recibido']);

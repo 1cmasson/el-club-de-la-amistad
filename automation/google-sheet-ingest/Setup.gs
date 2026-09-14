@@ -7,7 +7,7 @@
  * re-running it after a config change is safe.
  */
 function setup() {
-  var ss = SpreadsheetApp.getActive();
+  var ss = ss_();
 
   // Real Dates are written into the cells; the spreadsheet's timezone is what
   // renders them in Eastern time, DST included, forever. Never hand-shift dates.
@@ -26,12 +26,18 @@ function setup() {
 
   buildGuide_(ss);
 
-  // The list opens first; the guide sits immediately to its right.
-  ss.setActiveSheet(sheet);
-  ss.moveActiveSheet(1);
-  ss.setActiveSheet(ss.getSheetByName(GUIDE_NAME));
-  ss.moveActiveSheet(2);
-  ss.setActiveSheet(sheet);
+  // The list opens first; the guide sits immediately to its right. Tab order is
+  // cosmetic, and setActiveSheet can refuse on a spreadsheet opened by id, so it
+  // must never be the thing that aborts an otherwise-built sheet.
+  try {
+    ss.setActiveSheet(sheet);
+    ss.moveActiveSheet(1);
+    ss.setActiveSheet(ss.getSheetByName(GUIDE_NAME));
+    ss.moveActiveSheet(2);
+    ss.setActiveSheet(sheet);
+  } catch (e) {
+    console.warn('No se pudo reordenar las pestanas: ' + e);
+  }
 
   SpreadsheetApp.flush();
   console.log('setup() listo. Columnas: ' + HEADERS.join(' | '));

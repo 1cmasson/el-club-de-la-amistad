@@ -15,7 +15,7 @@
  * Safe to re-run: the second pass skips everything it already imported.
  */
 function backfillFromCsvTab() {
-  var ss  = SpreadsheetApp.getActive();
+  var ss  = ss_();
   var src = ss.getSheetByName('CSV');
   if (!src) throw new Error('No existe una pestaña llamada "CSV".');
 
