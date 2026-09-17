@@ -11,8 +11,8 @@ here is the only copy of anything, which is what makes every failure mode below
 recoverable rather than fatal.
 
 ```
-volunteer-signup  ──▶  Netlify Forms  ──▶  outgoing webhook  ──▶  Apps Script  ──▶  Voluntarios
-   (the website)        (durable copy)      submission_created      doPost()         (her sheet)
+volunteer-signup  ──▶  Netlify Forms  ──▶  outgoing webhook  ──▶  /api/forward-to-sheet  ──▶  Apps Script  ──▶  Voluntarios
+   (the website)        (durable copy)      submission_created     (this repo, always 200)      doPost()         (her sheet)
 ```
 
 ## This directory is a mirror, not a deployment
@@ -31,9 +31,10 @@ Wired up and verified end to end on **14 Sep 2026**. A real submission through
 | Sheet | **Club de la Amistad - Voluntarios**, owned by Carlos — id `1GtUGqWxhjQgK1veRuJLjL3EnK6w-FazYcoBN0T2AEPI` |
 | Apps Script | **Club de la Amistad - ingesta de voluntarios** (standalone, `SPREADSHEET_ID` set) |
 | Web app | Deployed "v1 - webhook de Netlify", Execute as Me, access Anyone |
-| Netlify hook | id `6aa8074ad56b0f760d0dcdb7`, `url` / `submission_created`, scoped to form `6a862edf79ed4d0008203c4c` |
+| Forwarder | `src/app/api/forward-to-sheet/route.ts` (this repo). Reads the Apps Script `/exec?token=...` URL from the `SHEET_INGEST_URL` Netlify env var (production only, never in git) and always answers Netlify 200 — see "One operational caveat" below. |
+| Netlify hook | id `6aa8074ad56b0f760d0dcdb7`, `url` / `submission_created`, scoped to form `6a862edf79ed4d0008203c4c`, pointed at `https://porunhialeahmejor.com/api/forward-to-sheet` |
 | OAuth scopes | Spreadsheets only. "Send email as you" was **declined** — `NOTIFY_EMAIL` is empty, so `notify_()` returns before it ever touches `MailApp`. Granting it later is required only if you set that constant. |
-| Backfill | The one historical submission (24 Aug) was replayed through the live endpoint, so it is in the sheet with its real Netlify id and cannot duplicate. |
+| Backfill | Historical submissions are replayed through the live endpoint with their real Netlify id, so they can never duplicate. Most recently: 3 signups that landed while the webhook was auto-disabled (16 Sep 2026) were replayed this way. |
 
 Verified at go-live: wrong token writes nothing; a non-`volunteer-signup` form is
 ignored; a replayed delivery dedupes; the warning-only protection prompts before
@@ -46,20 +47,30 @@ so every signup reaches a person even if the Sheets mirror is ever down. General
 access stays **Restricted** — the sheet holds real names and phone numbers and
 must not become link-shareable.
 
-**One operational caveat.** Netlify auto-disabled the outgoing webhook once,
-during token rotation, after a run of deliberately-failing test deliveries. It
-was re-enabled and has stayed enabled through clean deliveries since. Because
-Apps Script always answers 302, Netlify cannot tell a success from a failure, so
-this can recur — and it fails *silently*. If the sheet ever stops filling, check
-`disabled` on the hook first:
+**One operational caveat — now mitigated.** Netlify auto-disabled the outgoing
+webhook twice (once during token rotation, once around 16 Sep 2026), because
+Apps Script always answers 302 and Netlify eventually reads enough of those as
+failures. Both times it failed *silently*: signups kept arriving by email while
+the sheet quietly stopped filling. The second time, 3 real submissions were
+missed before anyone noticed and had to be backfilled (see the table above).
+
+The fix is `src/app/api/forward-to-sheet/route.ts`: the Netlify webhook now
+points at it instead of at Apps Script directly, and it always answers Netlify
+200 regardless of what happens downstream — so *this* hook can no longer trip
+the auto-disable. If the sheet ever stops filling again, the cause has moved
+one hop over: check the Netlify function logs for `forward-to-sheet` first, then
+fall back to the hook-disabled check that used to be the whole story:
 
 ```
 netlify api listHooksBySiteId --data '{"site_id":"a0f55919-29e9-4909-8014-a3f00cfc6ca0"}'
 netlify api enableHook        --data '{"hook_id":"6aa8074ad56b0f760d0dcdb7"}'
 ```
 
-The permanent fix, if it recurs, is the forwarding Netlify Function described
-below — it returns a clean 200 so Netlify never sees a redirect.
+A stale `SHEET_INGEST_URL` (see "Redeploying after a change" below — a *new
+deployment* mints a new `/exec` URL) is now the most likely failure: the
+forwarder will log `Sheet ingest responded <status>` or `Sheet ingest forward
+failed` to the Netlify function logs, but will still answer Netlify 200, so
+nothing will look broken from Netlify's side.
 
 ## Setup
 
@@ -165,10 +176,10 @@ Netlify's durable copy.
 **`/exec` answers a POST with a 302** to `script.googleusercontent.com`. If the
 sender does not follow it, Netlify records failed deliveries *even though rows are
 landing correctly* — and **Netlify auto-disables a notification after repeated
-failures**. Dedupe makes retries free, so the practical consequence is just a
-standing check: *is the webhook still enabled?* If it starts disabling itself, the
-escalation is a small Netlify Function that receives the event and forwards to Apps
-Script (it can return a clean 200), at the cost of reintroducing repo code.
+failures**. This happened twice in practice, so the mitigation described under
+"One operational caveat" above is no longer optional: `src/app/api/forward-to-sheet/route.ts`
+sits in front of Apps Script and always returns a clean 200, at the cost of
+reintroducing this one file of repo code.
 
 ## The sheet
 
@@ -220,6 +231,13 @@ position), but filter views are poorly supported in the Sheets mobile app — wh
 the only place she will open this — so the colours are what make sorting unnecessary.
 
 ## When it does not work
+
+Check first, before anything below: **Netlify → Site → Logs → Functions →
+`forward-to-sheet`**. It logs `Sheet ingest responded <status>` or `Sheet ingest
+forward failed` whenever the hop to Apps Script didn't work — most likely a
+stale `SHEET_INGEST_URL` after a *new deployment* (see "Redeploying after a
+change"). Netlify itself will show this hook as healthy regardless, since the
+forwarder always answers it 200.
 
 **Apps Script editor → Executions** lists every invocation. The `result` string names
 the branch taken:
