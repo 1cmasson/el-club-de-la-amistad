@@ -152,6 +152,11 @@
   color: var(--cream-muted);
 }
 
+.field small {
+  font-size: 13px;
+  color: var(--cream-faint);
+}
+
 .field em {
   font-style: normal;
   color: var(--cream-faint);

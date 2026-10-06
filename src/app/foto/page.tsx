@@ -176,6 +176,7 @@ export default function FotoPage() {
               <span>
                 Tu nombre <em>(opcional)</em>
               </span>
+              <small>Solo lo ven los organizadores — no sale en la pantalla.</small>
               <input
                 type="text"
                 value={name}

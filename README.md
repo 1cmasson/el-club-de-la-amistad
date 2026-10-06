@@ -128,8 +128,10 @@ a tap, every moderator's copy is relabelled, and an approved photo can still be
 pulled with **🗑 Quitar de la pantalla**.
 
 The projector polls `/api/gala/photos` every 12 s. A newly approved photo jumps
-the queue and appears as the very next slide with a gold *Nueva foto ·
-Compartida por …* ribbon, then joins the rotation every third slide.
+the queue and appears as the very next slide with a gold *Nueva foto* ribbon, then joins
+the rotation every third slide. The sender's optional name goes to the
+moderators in Telegram and the review page only — never to the screen or to
+`/api/gala/photos`, so nobody is called out in front of the room.
 Unapproved photos are never served: `/api/gala/photo/<id>` 404s unless approved.
 
 Environment (Netlify → Site configuration → Environment variables):

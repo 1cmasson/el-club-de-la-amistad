@@ -1,6 +1,10 @@
 import { listApproved } from "@/lib/gala/store";
 
-/** What the projector polls: approved guest photos, oldest approval first. */
+/**
+ * What the projector polls: approved guest photos, oldest approval first.
+ * Deliberately without the sender's name — that is for the moderators in
+ * Telegram only, never the screen or this public endpoint.
+ */
 export async function GET() {
   const photos = await listApproved();
   return Response.json(
@@ -10,7 +14,6 @@ export async function GET() {
         src: `/api/gala/photo/${p.id}`,
         width: p.width,
         height: p.height,
-        name: p.name,
         approvedAt: p.approvedAt,
       })),
     },
