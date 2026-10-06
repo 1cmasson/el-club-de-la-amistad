@@ -23,6 +23,9 @@ Built from the Claude Design source in
 | `/` | Hero, how it works, volunteer signup |
 | `/about` | The club, Edith Calvo, mission, values |
 | `/edith` | Standalone contact card for Edith, with a downloadable vCard |
+| `/gala` | Full-screen slideshow for the gala projector (unlisted, noindex) |
+| `/gala/tarjeta` | Printable QR table cards for the gala, four to a letter page |
+| `/foto` | Where guests land from the gala screen's QR code to send a photo (unlisted, noindex) |
 
 ## Local development
 
@@ -76,6 +79,83 @@ notifications too, so a signup reaches a person even if the mirror is down.
 > failures, so if the Sheet stops filling, check that toggle before anything
 > else. Its URL carries a shared token; the token itself lives in Apps Script
 > Script Properties, which is why nothing secret is needed here.
+
+## Gala slideshow
+
+`/gala` is a kiosk page for the projector: the club's photos one by one, each
+matted and slowly drifting, over the site's wood grain with candlelight, bokeh
+and rising gold dust drawn on a canvas. It loops forever: title card, the
+reel, then a closing *¡Gracias!*.
+
+| Piece | Where |
+| --- | --- |
+| The reel, in order | `src/app/gala/deck.ts` → `public/gala/NN.webp` |
+| Slideshow and timing | `src/app/gala/Slideshow.tsx` (one rAF loop, no per-frame React renders) |
+| Background | `src/app/gala/ambience.ts` |
+| Guest upload page | `src/app/foto/` |
+| Upload / list / serve / moderate | `src/app/api/gala/*`, `src/lib/gala/*` |
+
+**On the night:** open `https://porunhialeahmejor.com/gala` in Chrome on the
+laptop driving the projector and press <kbd>F</kbd> (or double-click) for
+fullscreen. <kbd>Space</kbd> pauses, <kbd>→</kbd> skips. The cursor hides
+itself and a wake lock keeps the laptop awake. Every reel photo is pulled into
+memory on load, so a Wi-Fi drop mid-show never blanks the screen — only new
+guest photos need the connection.
+
+For the tables, print `/gala/tarjeta` (letter, no margins, background
+graphics on) and cut along the dashed lines — guests can scan from their seats.
+
+Query params: `?qr=0` hides the QR card, `?sec=9` changes seconds per photo,
+`?live=0` stops polling for guest photos.
+
+**Changing the reel:** drop WebPs (1920px long edge, orientation baked in) in
+`public/gala/` and list them in `deck.ts` in showing order.
+
+### Guest photos and Telegram approval
+
+The QR card on screen opens `/foto`. A guest picks up to ten photos; the page
+shrinks each to a 2000px JPEG on the phone (Netlify caps a function body at
+6 MB) and posts it to `/api/gala/upload`. Photos are stored in the
+`gala-photos` **Netlify Blobs** store — no database — as `pending`.
+
+Each upload is sent as a photo to the moderators in Telegram, through the
+club's existing bot **@ClubAmistadHialeah_bot**, with **✅ Aprobar** /
+**❌ Rechazar** buttons. Those are *URL buttons* to an HMAC-signed
+`/api/gala/moderate` link, not callback buttons, on purpose: the Postiz bridge
+long-polls that bot, and a webhook or `getUpdates` here would break it. A URL
+tap produces no update, so the bridge never sees these messages' buttons. After
+a tap, every moderator's copy is relabelled, and an approved photo can still be
+pulled with **🗑 Quitar de la pantalla**.
+
+The projector polls `/api/gala/photos` every 12 s. A newly approved photo jumps
+the queue and appears as the very next slide with a gold *Nueva foto ·
+Compartida por …* ribbon, then joins the rotation every third slide.
+Unapproved photos are never served: `/api/gala/photo/<id>` 404s unless approved.
+
+Environment (Netlify → Site configuration → Environment variables):
+
+| Variable | Value |
+| --- | --- |
+| `GALA_TELEGRAM_BOT_TOKEN` | the bot's token (same as Postiz's `TELEGRAM_BOT_TOKEN`) |
+| `GALA_TELEGRAM_CHAT_IDS` | comma-separated Telegram user ids that approve; each must have started the bot |
+| `GALA_SECRET` | any long random string; signs the approve/reject links |
+| `GALA_AUTO_APPROVE` | optional — `1` puts uploads straight on screen, no approval |
+
+Without the Telegram variables uploads are still saved, just never announced.
+
+### The MP4 fallback
+
+`scripts/render-gala-video.mjs` renders the same slideshow (without the QR
+card) to a seamlessly looping 1080p MP4, for a venue without Wi-Fi or an AV
+person who wants a file. It doesn't screen-record: `/gala?render` exposes
+`window.__gala.renderAt(t)`, every motion is a pure function of time and the
+background is periodic in the loop length, so frame *N* flows into frame 0.
+
+```bash
+npm run dev
+node scripts/render-gala-video.mjs --out gala-loop.mp4        # ~15 min for the full loop
+node scripts/render-gala-video.mjs --preview 20 --out test.mp4  # first 20 s only
+```
 
 ## Deployment
 

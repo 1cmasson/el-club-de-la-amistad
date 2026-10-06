@@ -1,0 +1,80 @@
+@page {
+  size: letter;
+  margin: 0;
+}
+
+.sheet {
+  width: 8.5in;
+  height: 11in;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  background: #fff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.35in;
+  color: var(--espresso);
+  background: linear-gradient(170deg, #fbf5ea, #efe2c6);
+  box-shadow: inset 0 0 0 0.16in #fbf5ea, inset 0 0 0 calc(0.16in + 1.5px) var(--gold-deep);
+  /* dashed cut guides between the four cards */
+  outline: 1px dashed rgba(0, 0, 0, 0.25);
+}
+
+.seal {
+  width: 0.85in;
+  height: 0.85in;
+}
+
+.title {
+  margin-top: 0.12in;
+  font-size: 25pt;
+  font-weight: 700;
+  color: var(--espresso);
+  line-height: 1.05;
+}
+
+.sub {
+  margin: 0.05in 0 0;
+  font-size: 12pt;
+  font-style: italic;
+  color: var(--bronze-dark);
+}
+
+.qr {
+  width: 1.9in;
+  margin: 0.16in 0 0.12in;
+}
+
+.qr svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.how {
+  margin: 0;
+  font-size: 11pt;
+  font-weight: 600;
+}
+
+.en {
+  margin: 0.03in 0 0;
+  font-size: 9pt;
+  color: rgba(42, 26, 12, 0.7);
+}
+
+.url {
+  margin: 0.08in 0 0;
+  font-size: 9pt;
+  letter-spacing: 0.04em;
+  color: var(--bronze-dark);
+}
