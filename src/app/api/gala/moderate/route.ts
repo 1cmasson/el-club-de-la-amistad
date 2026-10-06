@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { getPhoto, isPhotoId, updatePhoto } from "@/lib/gala/store";
-import { refreshCards, verify, type ModerationAction } from "@/lib/gala/telegram";
+import { isReviewKey, refreshCards, verify, type ModerationAction } from "@/lib/gala/telegram";
 import { siteOrigin } from "@/lib/gala/origin";
 
 /*
@@ -47,6 +47,12 @@ export async function GET(request: NextRequest) {
     photo.approvedAt = next === "approved" ? Date.now() : undefined;
     await updatePhoto(photo);
     await refreshCards(photo, siteOrigin(request));
+  }
+
+  // Taps from the backup review page go back to it.
+  const back = q.get("r");
+  if (isReviewKey(back)) {
+    return new Response(null, { status: 303, headers: { Location: `/api/gala/review?k=${back}` } });
   }
 
   return next === "approved"

@@ -62,13 +62,17 @@ export async function getPhotoBytes(id: string) {
   return { bytes: res.data, contentType };
 }
 
-export async function listApproved() {
+export async function listAll() {
   const s = store();
   const { blobs } = await s.list({ prefix: "meta/" });
   const photos = await Promise.all(
     blobs.map((b) => s.get(b.key, { type: "json" }) as Promise<GuestPhoto | null>),
   );
-  return photos
-    .filter((p): p is GuestPhoto => p?.status === "approved")
+  return photos.filter((p): p is GuestPhoto => p !== null);
+}
+
+export async function listApproved() {
+  return (await listAll())
+    .filter((p) => p.status === "approved")
     .sort((a, b) => (a.approvedAt ?? 0) - (b.approvedAt ?? 0));
 }

@@ -17,16 +17,36 @@ const MAX_PHOTOS = 10;
 type Picked = { file: File; preview: string };
 type Phase = { kind: "pick" } | { kind: "sending"; done: number; total: number } | { kind: "sent"; count: number } | { kind: "error"; message: string };
 
+// createImageBitmap's imageOrientation isn't honored everywhere (older iOS
+// Safari), so fall back to an <img>, which applies EXIF orientation itself.
+async function decode(file: File): Promise<{ source: CanvasImageSource; width: number; height: number; done: () => void }> {
+  try {
+    const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+    return { source: bitmap, width: bitmap.width, height: bitmap.height, done: () => bitmap.close() };
+  } catch {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.src = url;
+    try {
+      await img.decode();
+    } catch (err) {
+      URL.revokeObjectURL(url);
+      throw err;
+    }
+    return { source: img, width: img.naturalWidth, height: img.naturalHeight, done: () => URL.revokeObjectURL(url) };
+  }
+}
+
 async function shrink(file: File): Promise<{ blob: Blob; width: number; height: number }> {
-  const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
-  const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
-  const width = Math.round(bitmap.width * scale);
-  const height = Math.round(bitmap.height * scale);
+  const img = await decode(file);
+  const scale = Math.min(1, MAX_EDGE / Math.max(img.width, img.height));
+  const width = Math.round(img.width * scale);
+  const height = Math.round(img.height * scale);
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
-  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, width, height);
-  bitmap.close();
+  canvas.getContext("2d")!.drawImage(img.source, 0, 0, width, height);
+  img.done();
   const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", 0.86));
   if (!blob) throw new Error("encode");
   return { blob, width, height };

@@ -40,7 +40,18 @@ export function verify(id: string, action: ModerationAction, sig: string) {
   return expected.length === given.length && timingSafeEqual(expected, given);
 }
 
-const moderateUrl = (origin: string, id: string, action: ModerationAction) =>
+/** The key for the backup review page (/api/gala/review?k=…). */
+export const reviewKey = () =>
+  createHmac("sha256", secret()).update("review").digest("base64url").slice(0, 24);
+
+export function isReviewKey(k: string | null) {
+  if (!k) return false;
+  const a = Buffer.from(reviewKey());
+  const b = Buffer.from(k);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+export const moderateUrl = (origin: string, id: string, action: ModerationAction) =>
   `${origin}/api/gala/moderate?id=${id}&a=${action}&s=${sign(id, action)}`;
 
 function card(photo: GuestPhoto, origin: string) {
@@ -66,21 +77,32 @@ function card(photo: GuestPhoto, origin: string) {
   return { caption: v.caption, reply_markup: { inline_keyboard: v.buttons } };
 }
 
-async function call(method: string, body: BodyInit, json = false) {
-  const res = await fetch(`https://api.telegram.org/bot${token()}/${method}`, {
-    method: "POST",
-    headers: json ? { "Content-Type": "application/json" } : undefined,
-    body,
-  });
-  const data = (await res.json().catch(() => ({}))) as {
-    ok?: boolean;
-    description?: string;
-    result?: { message_id: number };
-  };
-  if (!res.ok || !data.ok) {
+// Telegram allows about one message a second per chat; past that it answers
+// 429 with how long to wait. A burst of guests scanning at once hits that, so
+// wait it out a couple of times rather than leave a photo nobody can approve.
+const MAX_RETRY_WAIT_S = 4;
+
+async function call(method: string, body: () => BodyInit, json = false) {
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(`https://api.telegram.org/bot${token()}/${method}`, {
+      method: "POST",
+      headers: json ? { "Content-Type": "application/json" } : undefined,
+      body: body(),
+    });
+    const data = (await res.json().catch(() => ({}))) as {
+      ok?: boolean;
+      description?: string;
+      parameters?: { retry_after?: number };
+      result?: { message_id: number };
+    };
+    if (res.ok && data.ok) return data.result;
+    const wait = data.parameters?.retry_after;
+    if (res.status === 429 && wait && wait <= MAX_RETRY_WAIT_S && attempt < 2) {
+      await new Promise((r) => setTimeout(r, wait * 1000));
+      continue;
+    }
     throw new Error(`Telegram ${method} -> ${res.status} ${data.description ?? ""}`);
   }
-  return data.result;
 }
 
 /** Sends the photo to every moderator. Returns the messages it managed to send. */
@@ -96,11 +118,14 @@ export async function announce(
   const { caption, reply_markup } = card(photo, origin);
   const sent: TelegramMessageRef[] = [];
   for (const chatId of chatIds()) {
-    const form = new FormData();
-    form.append("chat_id", chatId);
-    form.append("photo", new Blob([bytes], { type: photo.contentType }), "foto.jpg");
-    form.append("caption", caption);
-    form.append("reply_markup", JSON.stringify(reply_markup));
+    const form = () => {
+      const f = new FormData();
+      f.append("chat_id", chatId);
+      f.append("photo", new Blob([bytes], { type: photo.contentType }), "foto.jpg");
+      f.append("caption", caption);
+      f.append("reply_markup", JSON.stringify(reply_markup));
+      return f;
+    };
     try {
       const msg = await call("sendPhoto", form);
       if (msg) sent.push({ chatId, messageId: msg.message_id });
@@ -118,7 +143,7 @@ export async function refreshCards(photo: GuestPhoto, origin: string) {
     photo.telegram.map(({ chatId, messageId }) =>
       call(
         "editMessageCaption",
-        JSON.stringify({ chat_id: chatId, message_id: messageId, caption, reply_markup }),
+        () => JSON.stringify({ chat_id: chatId, message_id: messageId, caption, reply_markup }),
         true,
       ).catch((err) => {
         if (!/not modified/i.test(String(err))) console.error("Gala Telegram edit failed", err);

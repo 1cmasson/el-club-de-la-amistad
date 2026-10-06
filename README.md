@@ -142,6 +142,18 @@ Environment (Netlify → Site configuration → Environment variables):
 | `GALA_AUTO_APPROVE` | optional — `1` puts uploads straight on screen, no approval |
 
 Without the Telegram variables uploads are still saved, just never announced.
+Telegram rate-limits a chat to about a message a second; a 429 is waited out
+twice before giving up.
+
+**Backup review page.** If a Telegram card never arrives (a moderator who
+never sent `/start` to the bot, a burst that outlasted the retries, Telegram
+down), every upload is still reachable at `/api/gala/review?k=<key>`: newest
+first, thumbnails, Aprobar / Rechazar / Quitar, refreshing itself every 20 s.
+The key is derived from `GALA_SECRET`:
+
+```bash
+node -e "console.log(require('crypto').createHmac('sha256', process.env.GALA_SECRET).update('review').digest('base64url').slice(0,24))"
+```
 
 ### The MP4 fallback
 
