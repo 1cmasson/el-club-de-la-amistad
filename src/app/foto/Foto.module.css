@@ -152,11 +152,6 @@
   color: var(--cream-muted);
 }
 
-.field small {
-  font-size: 13px;
-  color: var(--cream-faint);
-}
-
 .field em {
   font-style: normal;
   color: var(--cream-faint);
@@ -170,6 +165,65 @@
   background: var(--paper-input);
   color: var(--espresso);
   font-size: 17px;
+}
+
+/* Opt-in to showing the name on screen: big, bordered, impossible to miss. */
+.consent {
+  margin-top: 14px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--rule-strong);
+  background: rgba(28, 17, 8, 0.45);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.consent[data-on] {
+  border-color: var(--gold);
+  background: rgba(212, 160, 42, 0.14);
+}
+
+.consent input {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 1px 0 0;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+.consent span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.consent b {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--cream);
+}
+
+.consent small {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--cream-muted);
+}
+
+.confirm {
+  margin: 14px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--gold-pale);
+}
+
+.confirm b {
+  color: var(--gold-light);
 }
 
 .send,

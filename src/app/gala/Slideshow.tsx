@@ -27,12 +27,13 @@ type PhotoSlide = {
   src: string;
   width: number;
   height: number;
+  name?: string;
   fresh?: boolean;
 };
 type Slide = { kind: "title"; id: string } | { kind: "end"; id: string } | PhotoSlide;
 type Entry = { seq: number; slide: Slide; start: number; end: number; fromDeck: boolean };
-// Who sent a photo is never sent to the screen: the club doesn't call guests out.
-type Upload = { id: string; src: string; width: number; height: number };
+// `name` is present only when the guest opted in to showing it on screen.
+type Upload = { id: string; src: string; width: number; height: number; name?: string };
 
 const FADE = 1.6; // seconds of crossfade between slides
 const CARD_SEC = 9; // title and closing cards
@@ -543,6 +544,7 @@ function SlideBody({ slide, imgRef }: { slide: Slide; imgRef: (el: HTMLImageElem
       {slide.fresh && (
         <figcaption className={styles.fresh}>
           <span className={styles.freshTag}>✦ Nueva foto</span>
+          {slide.name && <span className={styles.freshName}>Compartida por {slide.name}</span>}
         </figcaption>
       )}
     </figure>

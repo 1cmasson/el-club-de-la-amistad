@@ -55,6 +55,7 @@ async function shrink(file: File): Promise<{ blob: Blob; width: number; height: 
 export default function FotoPage() {
   const [picked, setPicked] = useState<Picked[]>([]);
   const [name, setName] = useState("");
+  const [showName, setShowName] = useState(false);
   const [phase, setPhase] = useState<Phase>({ kind: "pick" });
 
   const onPick = (files: FileList | null) => {
@@ -72,6 +73,10 @@ export default function FotoPage() {
   };
 
   const send = async () => {
+    if (showName && !name.trim()) {
+      setPhase({ kind: "error", message: "Escribe tu nombre para que aparezca en la pantalla, o desmarca la casilla." });
+      return;
+    }
     const total = picked.length;
     let done = 0;
     setPhase({ kind: "sending", done, total });
@@ -88,6 +93,7 @@ export default function FotoPage() {
         form.append("width", String(shrunk.width));
         form.append("height", String(shrunk.height));
         form.append("name", name);
+        form.append("showName", showName ? "1" : "0");
         const res = await fetch("/api/gala/upload", { method: "POST", body: form });
         if (!res.ok) throw new Error("No pudimos enviar la foto. Revisa tu conexión e inténtalo otra vez.");
         done++;
@@ -176,17 +182,46 @@ export default function FotoPage() {
               <span>
                 Tu nombre <em>(opcional)</em>
               </span>
-              <small>Solo lo ven los organizadores — no sale en la pantalla.</small>
               <input
                 type="text"
                 value={name}
                 maxLength={40}
                 autoComplete="name"
                 placeholder="Tu nombre · Your name"
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (phase.kind === "error") setPhase({ kind: "pick" });
+                }}
                 disabled={sending}
               />
             </label>
+
+            <label className={styles.consent} data-on={showName || undefined}>
+              <input
+                type="checkbox"
+                checked={showName}
+                onChange={(e) => {
+                  setShowName(e.target.checked);
+                  if (phase.kind === "error") setPhase({ kind: "pick" });
+                }}
+                disabled={sending}
+              />
+              <span>
+                <b>Mostrar mi nombre en la pantalla</b>
+                <small>
+                  {showName
+                    ? `Aparecerá “Compartida por ${name.trim() || "…"}” junto a tu foto.`
+                    : "Si no la marcas, tu foto sale sin nombre. Solo los organizadores lo ven."}
+                </small>
+              </span>
+            </label>
+
+            {showName && name.trim() && !sending && (
+              <p className={styles.confirm}>
+                Al enviar, confirmas que tu nombre <b>{name.trim()}</b> aparecerá en la pantalla como autor de
+                {picked.length > 1 ? " estas fotos" : " esta foto"}.
+              </p>
+            )}
 
             <button type="button" className={styles.send} disabled={picked.length === 0 || sending} onClick={send}>
               {sending

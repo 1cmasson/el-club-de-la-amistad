@@ -53,6 +53,7 @@ export async function POST(request: Request) {
     id: newPhotoId(),
     status: autoApprove ? "approved" : "pending",
     name,
+    showName: Boolean(name) && form.get("showName") === "1",
     width: clampDim(form.get("width")),
     height: clampDim(form.get("height")),
     contentType,

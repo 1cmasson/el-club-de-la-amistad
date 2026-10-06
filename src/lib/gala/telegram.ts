@@ -55,7 +55,9 @@ export const moderateUrl = (origin: string, id: string, action: ModerationAction
   `${origin}/api/gala/moderate?id=${id}&a=${action}&s=${sign(id, action)}`;
 
 function card(photo: GuestPhoto, origin: string) {
-  const who = photo.name ? `De: ${photo.name}` : "Sin nombre";
+  const who = photo.name
+    ? `De: ${photo.name}\n${photo.showName ? "🪪 Quiere su nombre en pantalla" : "🙈 Sin nombre en pantalla"}`
+    : "Sin nombre";
   const views: Record<PhotoStatus, { caption: string; buttons: { text: string; url: string }[][] }> = {
     pending: {
       caption: `📸 Nueva foto para la pantalla de la Gala\n${who}`,

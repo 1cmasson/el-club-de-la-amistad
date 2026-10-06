@@ -129,9 +129,11 @@ pulled with **🗑 Quitar de la pantalla**.
 
 The projector polls `/api/gala/photos` every 12 s. A newly approved photo jumps
 the queue and appears as the very next slide with a gold *Nueva foto* ribbon, then joins
-the rotation every third slide. The sender's optional name goes to the
-moderators in Telegram and the review page only — never to the screen or to
-`/api/gala/photos`, so nobody is called out in front of the room.
+the rotation every third slide. The sender's name is opt-in: it reaches
+the screen (*Compartida por …*) and `/api/gala/photos` only if the guest ticked
+**Mostrar mi nombre en la pantalla**, which the upload page confirms before
+sending. Otherwise the name stays with the moderators — the Telegram card and
+the review page show it, and whether they opted in.
 Unapproved photos are never served: `/api/gala/photo/<id>` 404s unless approved.
 
 Environment (Netlify → Site configuration → Environment variables):

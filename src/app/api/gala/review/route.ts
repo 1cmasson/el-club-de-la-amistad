@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
       });
       return `<li class="${p.status}">
   <img src="/api/gala/photo/${p.id}?k=${k}" alt="" loading="lazy">
-  <div><b>${LABEL[p.status]}</b><span>${esc(p.name || "Sin nombre")} · ${when}</span></div>
+  <div><b>${LABEL[p.status]}</b><span>${esc(p.name || "Sin nombre")}${p.name ? (p.showName ? " · nombre en pantalla" : " · sin nombre en pantalla") : ""} · ${when}</span></div>
   <nav>${actions}</nav>
 </li>`;
     })

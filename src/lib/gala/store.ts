@@ -19,6 +19,8 @@ export type GuestPhoto = {
   id: string;
   status: PhotoStatus;
   name: string;
+  /** The guest ticked "show my name on screen" when sending. */
+  showName?: boolean;
   width: number;
   height: number;
   contentType: string;

@@ -2,8 +2,8 @@ import { listApproved } from "@/lib/gala/store";
 
 /**
  * What the projector polls: approved guest photos, oldest approval first.
- * Deliberately without the sender's name — that is for the moderators in
- * Telegram only, never the screen or this public endpoint.
+ * The sender's name is included only when they ticked "show my name on
+ * screen"; otherwise it stays with the moderators.
  */
 export async function GET() {
   const photos = await listApproved();
@@ -14,6 +14,7 @@ export async function GET() {
         src: `/api/gala/photo/${p.id}`,
         width: p.width,
         height: p.height,
+        ...(p.showName && p.name ? { name: p.name } : {}),
         approvedAt: p.approvedAt,
       })),
     },
